@@ -14,12 +14,18 @@
 
 void			ft_putchar(char c)
 {
-	write(1, &c, 1);
+	int	i;
+	
+	i = write(1, &c, 1);
+	(void)i;
 }
 
 void			ft_putnchar(char *ptr, size_t len)
 {
-	write(1, ptr, len);
+	int	i;
+
+	i = write(1, ptr, len);
+	(void)i;
 }
 
 void			ft_putstr(char *str)

@@ -1,6 +1,6 @@
 CC = gcc
 #FLAGS = -Wall -Wextra -ggdb -fsanitize=address
-FLAGS = -Wall -Wextra -Ofast
+FLAGS = -Wall -Wextra -Werror -Ofast
 NAME = libft.a
 SRC =	src/ft_printf/ft_printf.c\
 		src/ft_printf/ft_sprintf.c\
