@@ -20,12 +20,12 @@
 # define V_DIV_BY_0 			"ERROR: division by 0\n"
 # define V_INV_MOD_ERR 		"ERROR: elem not inversible for this modulo\n"
 
-//# define V_TYPE 			uint64_t
-//# define	V_MID_INF		0xffffffff
-//# define	V_SUP				0xffffffffffffffff
-# define V_TYPE 			uint8_t
-# define	V_MID_INF		0xf
-# define	V_SUP				0xff
+# define V_TYPE 			uint64_t
+# define	V_MID_INF		0xffffffff
+# define	V_SUP				0xffffffffffffffff
+//# define V_TYPE 			uint8_t
+//# define	V_MID_INF		0xf
+//# define	V_SUP				0xff
 # define V_BIT_LEN		((int8_t)sizeof(V_TYPE) * 8)
 
 /*
@@ -36,9 +36,9 @@
 **			2] V_LEN_TYPE must not overflow with V_MAX_LEN (beware that V_LEN_TYPE is signed) 
 */
 
-//# define V_MAX_NB_LEN	3
-//# define V_MAX_LEN		V_MAX_NB_LEN * 2 + 1
-# define V_MAX_LEN		33
+# define V_DEMI_LUNE		32
+# define V_MAX_LEN		V_DEMI_LUNE * 2 + 1
+//# define V_MAX_LEN		65
 # define V_LEN_TYPE		int16_t
 
 
