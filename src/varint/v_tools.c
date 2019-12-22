@@ -20,11 +20,7 @@ bool				is_g_v(int8_t i, t_varint v)
 	{
 		if (v.sign == 0
 			&& ft_dprintf(2, "%s%s%s", KRED, V_ERR, KNRM))
-		{
-			ft_putstr("\x1B[36;1mBREAK\x1B[0m\n");
-			exit(0);
 			return (true);
-		}
 		return (false);
 	}
 	v.sign = (i == 0) ? 1 : v.sign;

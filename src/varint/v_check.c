@@ -104,8 +104,6 @@ static int8_t		v_check_expmod(t_varint v, t_varint e, t_varint mod)
 **	operator compute its operands
 */
 
-#include <stdio.h>
-
 int8_t				v_check(t_varint a, t_varint b, t_varint m, char *op)
 {
 
