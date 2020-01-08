@@ -115,7 +115,7 @@ char				*rm_begin_whitespace(char *str);
 char				*rm_multi_whitespace(char *str);
 int				get_next_line(int fd, char **line);
 uint64_t			ft_rand(int urand_fd, uint64_t min, uint64_t max);
-int				ft_read(char *file, t_read *r);
+int				ft_read(t_read *r, char *file);
 /*
 **	ft_printf
 */
