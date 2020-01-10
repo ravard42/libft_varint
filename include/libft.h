@@ -106,6 +106,7 @@ int				ft_len(char *buf, char mode);
 int				ft_power(int x, int n);
 int				ft_atoi(const char *str);
 int				ft_hexatoi(const char *str);
+bool				ft_is_decimal(char *str);
 char				ft_toupper(char c);
 uint64_t			*hstr_to_64_t(uint64_t *x, int64_t len_64, char *str);
 char				**malloc_empty_str_tab(void);
