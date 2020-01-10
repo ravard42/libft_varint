@@ -42,7 +42,6 @@
 
 # define V_DEMI_LEN		16
 # define V_MAX_LEN		V_DEMI_LEN * 2 + 1
-//# define V_MAX_LEN		65
 # define V_LEN_TYPE		int16_t
 
 typedef struct				s_varint
