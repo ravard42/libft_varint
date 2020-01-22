@@ -15,7 +15,7 @@ uint64_t		ft_range(uint64_t src, uint64_t min, uint64_t max)
 }
 
 /*
-** uint64_t pseudo random number from /dev/urandom
+** pseudo random number from /dev/urandom
 ** beware that dest have enough space memory for len bytes
 */
 
