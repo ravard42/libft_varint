@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   v_expmod.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/22 04:05:03 by ravard            #+#    #+#             */
+/*   Updated: 2020/01/22 04:05:45 by ravard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-static void			sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod, bool eucl)
+static void	sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod, bool eucl)
 {
 	if (v == NULL)
 	{
@@ -14,10 +26,10 @@ static void			sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod, bool eucl)
 	}
 }
 
-t_varint				v_expmod(t_varint v, t_varint e, t_varint mod, bool eucl)
+t_varint	v_expmod(t_varint v, t_varint e, t_varint mod, bool eucl)
 {
-	V_LEN_TYPE		i;
-	int8_t			j;
+	V_LEN_TYPE			i;
+	int8_t				j;
 	t_varint			ret;
 
 	if ((j = v_check(v, e, mod, "expmod")) != -1)

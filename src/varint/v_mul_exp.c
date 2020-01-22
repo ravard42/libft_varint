@@ -1,15 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   v_mul_exp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/22 03:59:40 by ravard            #+#    #+#             */
+/*   Updated: 2020/01/22 04:01:50 by ravard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 /*
 **	x * y = (a + b) * (c + d)
-**	
+**
 **	|upper = a * c||lower = b * d|
 **			  |mid[0] = a*d|
 **			  |mid[1] = b*c|
-**
 */
 
-static V_TYPE 		upper(V_TYPE x, V_TYPE y)
+static V_TYPE		upper(V_TYPE x, V_TYPE y)
 {
 	V_TYPE			tmp[4];
 	V_TYPE			upper;
@@ -32,7 +43,7 @@ static V_TYPE 		upper(V_TYPE x, V_TYPE y)
 	return (ovfl);
 }
 
-static void		partial_mul(t_varint *p_mul, t_varint a, V_TYPE bxj)
+static void			partial_mul(t_varint *p_mul, t_varint a, V_TYPE bxj)
 {
 	V_LEN_TYPE		i;
 	V_TYPE			ovfl;
@@ -44,7 +55,7 @@ static void		partial_mul(t_varint *p_mul, t_varint a, V_TYPE bxj)
 	i = -1;
 	while (++i < a.len)
 	{
-		tmp = a.x[i] * bxj;	
+		tmp = a.x[i] * bxj;
 		p_mul->x[p_mul->len] = tmp + ovfl + c;
 		p_mul->len++;
 		c = add_carry(tmp, ovfl, c);
@@ -58,12 +69,12 @@ static void		partial_mul(t_varint *p_mul, t_varint a, V_TYPE bxj)
 	v_len(p_mul);
 }
 
-t_varint				v_mul(t_varint a, t_varint b)
+t_varint			v_mul(t_varint a, t_varint b)
 {
-	t_varint 	ret;
-	t_varint 	p_mul;
-	V_LEN_TYPE	j;
-	int8_t		sign;
+	t_varint		ret;
+	t_varint		p_mul;
+	V_LEN_TYPE		j;
+	int8_t			sign;
 
 	if (v_check(a, b, g_v[0], "mul") == 3)
 		return (g_v[3]);
@@ -94,7 +105,7 @@ t_varint			v_exp(t_varint v, t_varint e)
 {
 	V_LEN_TYPE					i;
 	int8_t						j;
-	t_varint						ret;
+	t_varint					ret;
 
 	if ((j = v_check(v, e, g_v[0], "exp")) != -1)
 		return (g_v[j]);

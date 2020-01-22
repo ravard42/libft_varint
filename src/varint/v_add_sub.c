@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   v_add_sub.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/22 03:57:53 by ravard            #+#    #+#             */
+/*   Updated: 2020/01/22 03:59:20 by ravard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 int8_t				add_carry(V_TYPE a, V_TYPE b, int8_t c)
@@ -12,9 +24,9 @@ int8_t				add_carry(V_TYPE a, V_TYPE b, int8_t c)
 ** a >= 0 et b >= 0
 */
 
-static t_varint	v_add_pos(t_varint a, t_varint b)
+static t_varint		v_add_pos(t_varint a, t_varint b)
 {
-	t_varint			ret;
+	t_varint		ret;
 	V_LEN_TYPE		len;
 	V_LEN_TYPE		i;
 	int8_t			c;
@@ -37,9 +49,9 @@ static t_varint	v_add_pos(t_varint a, t_varint b)
 ** a >= b >= 0
 */
 
-static t_varint	v_sub_pos(t_varint a, t_varint b)
+static t_varint		v_sub_pos(t_varint a, t_varint b)
 {
-	t_varint			ret;
+	t_varint		ret;
 	V_LEN_TYPE		len;
 	V_LEN_TYPE		i;
 	uint8_t			c;
@@ -57,11 +69,11 @@ static t_varint	v_sub_pos(t_varint a, t_varint b)
 	return (ret);
 }
 
-t_varint				v_add(t_varint a, t_varint b)
+t_varint			v_add(t_varint a, t_varint b)
 {
-	t_varint			ret;
-	bool				tmp;
-	
+	t_varint		ret;
+	bool			tmp;
+
 	if (v_check(a, b, g_v[0], "add_sub") == 3)
 		return (g_v[3]);
 	if (a.sign == b.sign)
