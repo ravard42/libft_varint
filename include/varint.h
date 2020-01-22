@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 02:29:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 05:19:55 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/22 20:39:05 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,16 @@
 **# define V_BIT_LEN			64
 */
 
+
+
+
 # define V_TYPE 			uint8_t
 # define V_MID_INF			0xf
 # define V_SUP				0xff
 # define V_LEN				1
 # define V_BIT_LEN			8
+
+
 
 /*
 **	overflow protection note:
@@ -116,7 +121,7 @@ int64_t						v_maxbin_pow(t_varint v);
 t_varint					v_abs(t_varint v);
 t_varint					v_inc(t_varint a);
 t_varint					v_dec(t_varint a);
-t_varint					v_rand_n(V_LEN_TYPE len);
+t_varint					v_rand(V_LEN_TYPE len, bool neg);
 
 int8_t						v_check(t_varint a, t_varint b, t_varint m,
 		char *op);

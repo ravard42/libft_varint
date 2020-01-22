@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:38:00 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 04:38:25 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/22 20:39:03 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,20 @@ t_varint				v_abs(t_varint v)
 ** load a varint pseudo random number from /dev/urandom
 */
 
-t_varint				v_rand_n(V_LEN_TYPE len)
+t_varint				v_rand(V_LEN_TYPE len, bool neg)
 {
 	V_TYPE			rand_n[len];
 	t_varint		n;
+	uint8_t			sign;
 
+	if (neg)
+	{
+		ft_rand(&sign, 1);
+		sign = (sign % 2) ? 1 : -1;
+	}
+	else
+		sign = 1;
 	ft_rand(rand_n, len * V_LEN);
-	n = v_init(1, rand_n, len);
+	n = v_init(sign, rand_n, len);
 	return (n);
 }
