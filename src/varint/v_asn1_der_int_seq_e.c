@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   v_asn1_der_int_seq_e.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/22 04:39:29 by ravard            #+#    #+#             */
+/*   Updated: 2020/01/22 04:45:05 by ravard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static int		set_fd(char *out)
@@ -86,7 +98,7 @@ static void		put_value(int fd_out, t_varint *v)
 **	index 0 for sequence header, and others for integer headers
 **	h[x][0] = header len
 **	h[x][1:4] = header
-** h[x][5] = add sign byte (or not) between header and value
+**  h[x][5] = add sign byte (or not) between header and value
 */
 
 int		v_asn1_der_int_seq_e(char *out, t_varint *v, int nb_varint)
@@ -99,7 +111,7 @@ int		v_asn1_der_int_seq_e(char *out, t_varint *v, int nb_varint)
 
 	seq_len = 0;
 	i = -1;
-	while(++i < nb_varint 
+	while (++i < nb_varint 
 		&& (tmp = set_sub_header(h[i + 1], v[i])) != -1)
 		seq_len += tmp;
 	if (tmp == -1 || put_header(h[0], 0x30, seq_len) == -1)

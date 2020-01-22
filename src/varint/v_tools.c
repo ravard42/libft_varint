@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   v_tools.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/22 04:22:35 by ravard            #+#    #+#             */
+/*   Updated: 2020/01/22 04:37:47 by ravard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-bool				is_g_v(int8_t i, t_varint v)
+bool			is_g_v(int8_t i, t_varint v)
 {
 	if (i == 3)
 	{
@@ -55,21 +67,26 @@ void			v_sort(t_varint *a, t_varint *b)
 	}
 }
 
-void		v_print(t_varint *v, char *name, int64_t number, char *col)
+void			v_print(t_varint *v, char *name, int64_t number, char *col)
 {
 	V_LEN_TYPE		i;
 
 	if (v_check(*v, g_v[0], g_v[0], NULL) == 3)
-		return;
+		return ;
 	if (number == -2)
 		ft_dprintf(2, "%s<---VARINT %s------->%s\n", col, name, KNRM);
 	else if (number >= -1)
-		ft_dprintf(2, "%s<---VARINT %s %ld------->%s\n", col, name, number, KNRM);
+		ft_dprintf(2, "%s<---VARINT %s %ld------->%s\n", col, name,
+				number, KNRM);
 	ft_dprintf(2, "v->sign = %hd\n", v->sign);
 	ft_dprintf(2, "v->len = %d\n", v->len);
 	i = v->len;
 	while (--i != -1)
-		//ft_dprintf(2, "(i, x) = (%lu, %02lx)\n", i, v->x[i]);
-		ft_dprintf(2, "(i, x) = (%lu, %lx)\n", i, v->x[i]);
+	{
+		if (V_LEN == 1)
+			ft_dprintf(2, "(i, x) = (%u, %02x)\n", i, v->x[i]);
+		else
+			ft_dprintf(2, "(i, x) = (%lu, %016lx)\n", i, v->x[i]);
+	}
 	ft_dprintf(2, "%s<---------------------->\n%s", col, KNRM);
 }

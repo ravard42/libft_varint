@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   v_cmp.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/22 04:21:26 by ravard            #+#    #+#             */
+/*   Updated: 2020/01/22 04:22:16 by ravard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static bool		v_lt_pos(t_varint a, t_varint b)
 {
 	V_LEN_TYPE	i;
-	
+
 	if (a.len > b.len)
 		return (false);
 	if (b.len > a.len)
@@ -38,7 +50,6 @@ static bool		v_lt_neg(t_varint a, t_varint b)
 
 static bool		v_lt(t_varint a, t_varint b)
 {
-
 	if (is_g_v(0, a) && is_g_v(0, b))
 		return (false);
 	if (a.sign == 1 && b.sign == -1)
@@ -70,7 +81,7 @@ static bool		v_eq(t_varint a, t_varint b)
 	return (false);
 }
 
-bool	v_cmp(t_varint a, char *cmp, t_varint b)
+bool			v_cmp(t_varint a, char *cmp, t_varint b)
 {
 	if (v_check(a, b, g_v[0], NULL) == 3)
 		return (false);
