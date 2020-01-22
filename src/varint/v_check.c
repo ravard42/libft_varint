@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:39:02 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 04:39:05 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/22 05:50:52 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int8_t			v_check_mul(t_varint a, t_varint b)
 	return (-1);
 }
 
-static int8_t		v_check_div_mod(t_varint dividend, t_varint divisor)
+static int8_t			v_check_div_mod(t_varint dividend, t_varint divisor)
 {
 	int64_t	mb_pow[2];
 	int64_t	sup;
@@ -55,11 +55,11 @@ static int8_t		v_check_div_mod(t_varint dividend, t_varint divisor)
 	return (-1);
 }
 
-static int8_t		v_check_exp(t_varint v, t_varint e)
+static int8_t			v_check_exp(t_varint v, t_varint e)
 {
-	int64_t	mb_pow[2];
+	int64_t		mb_pow[2];
 	uint64_t	e64;
-	int8_t	i;
+	int8_t		i;
 
 	if (e.sign == -1
 		&& ft_dprintf(2, "%s%s%s", KRED, V_NEG_POW, KNRM))
@@ -73,7 +73,7 @@ static int8_t		v_check_exp(t_varint v, t_varint e)
 		e64 += (uint64_t)e.x[i] << V_BIT_LEN * i;
 	mb_pow[0] = v_maxbin_pow(v);
 	mb_pow[1] = v_maxbin_pow(e);
-	if (1 + ((mb_pow[0] + 1)* e64) / V_BIT_LEN > V_MAX_LEN
+	if (1 + ((mb_pow[0] + 1) * e64) / V_BIT_LEN > V_MAX_LEN
 		&& ft_dprintf(2, "%s%s%s", KRED, V_EXP_OVFL, KNRM))
 		return (3);
 	if (is_g_v(0, e))
@@ -83,7 +83,7 @@ static int8_t		v_check_exp(t_varint v, t_varint e)
 	return (-1);
 }
 
-static int8_t		v_check_expmod(t_varint v, t_varint e, t_varint mod)
+static int8_t			v_check_expmod(t_varint v, t_varint e, t_varint mod)
 {
 	int64_t	mb_pow[2];
 	int64_t	sup;
@@ -108,16 +108,15 @@ static int8_t		v_check_expmod(t_varint v, t_varint e, t_varint mod)
 }
 
 /*
-**	if v_check return a number 0 <= n <= 3 
+**	if v_check return a number 0 <= n <= 3
 ** to varint operator scop
 **	then operator return directly g_v[n]
 **	else if v_check return -1
 **	operator compute its operands
 */
 
-int8_t				v_check(t_varint a, t_varint b, t_varint m, char *op)
+int8_t					v_check(t_varint a, t_varint b, t_varint m, char *op)
 {
-
 	if (is_g_v(3, a) || is_g_v(3, b) || is_g_v(3, m))
 		return (3);
 	if ((a.len <= 0 || a.len > V_MAX_LEN
@@ -135,6 +134,5 @@ int8_t				v_check(t_varint a, t_varint b, t_varint m, char *op)
 		return (v_check_div_mod(a, b));
 	if (op && !ft_strcmp("expmod", op))
 		return (v_check_expmod(a, b, m));
-//	printf("TOUT VA BIEN == -1\n");	
 	return (-1);
 }
