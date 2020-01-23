@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 03:57:53 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 03:59:20 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 01:26:19 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_varint			v_add(t_varint a, t_varint b)
 	t_varint		ret;
 	bool			tmp;
 
-	if (v_check(a, b, g_v[0], "add_sub") == 3)
+	if (!v_check(a, b, g_v[0], "add"))
 		return (g_v[3]);
 	if (a.sign == b.sign)
 	{

@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:05:03 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 04:05:45 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 01:52:18 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ t_varint	v_expmod(t_varint v, t_varint e, t_varint mod, bool eucl)
 	int8_t				j;
 	t_varint			ret;
 
-	if ((j = v_check(v, e, mod, "expmod")) != -1)
-		return (g_v[j]);
+	if (!v_check(v, e, mod, "expmod"))
+		return (g_v[3]);
+	if (is_g_v(0, e) && !is_g_v(1, mod))
+		return (g_v[1]);
 	j = V_BIT_LEN - 1;
-	while (((V_TYPE)e.x[e.len - 1] >> j & 1) == 0)
+	while (((V_TYPE)e.x[e.len - 1] >> j & 1) == 0 && j)
 		j--;
 	ret = v_mod(v, mod, true);
 	i = e.len;

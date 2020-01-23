@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 02:29:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 20:39:05 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 02:17:21 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@
 
 # define V_ERR				"g_v_r has been called\n"
 # define V_BAD_LEN 			"v.len <= 0 or v.len > MAX_LEN\n"
+# define V_BAD_SIGN 		"sign must be -1 or 1\n"
 # define V_NEG_POW 			"neg pow not handle\n"
 # define V_BAD_SUB 			"a < b in v_pos_sub\n"
 # define V_ADD_OVFL			"overflow in v_add of v_sub, increase V_MAX_LEN\n"
 # define V_MUL_OVFL			"overflow in v_mul, increase V_MAX_LEN\n"
-# define V_DIV_MOD_OVFL		"overflow in v_div or v_mod, increase V_MAX_LEN\n"
+# define V_DIV_OVFL			"overflow in v_div or v_mod, increase V_MAX_LEN\n"
 # define V_EXP_OVFL			"overflow in v_exp, increase V_MAX_LEN\n"
 # define V_EXP_LIM			"expo lim value overtaken in v_exp\n"
 # define V_EXPMOD_OVFL		"overflow in v_expmod, increase V_MAX_LEN\n"
@@ -43,16 +44,11 @@
 **# define V_BIT_LEN			64
 */
 
-
-
-
 # define V_TYPE 			uint8_t
 # define V_MID_INF			0xf
 # define V_SUP				0xff
 # define V_LEN				1
 # define V_BIT_LEN			8
-
-
 
 /*
 **	overflow protection note:
@@ -98,11 +94,11 @@ typedef struct s_read		t_read;
 /*
 **		g_v array regroups often used varint values
 **
-**		index		value
+**		index	value
 **		  0		  0
 **		  1		  1
 **		  2		  2
-**		  3		 err
+**		  3		 err (sign != -1 && sign != 1)
 */
 
 static const t_varint		g_v[4] = {
@@ -123,7 +119,7 @@ t_varint					v_inc(t_varint a);
 t_varint					v_dec(t_varint a);
 t_varint					v_rand(V_LEN_TYPE len, bool neg);
 
-int8_t						v_check(t_varint a, t_varint b, t_varint m,
+bool						v_check(t_varint a, t_varint b, t_varint m,
 		char *op);
 
 void						v_sort(t_varint *a, t_varint *b);

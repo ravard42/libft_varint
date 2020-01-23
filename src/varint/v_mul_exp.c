@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 03:59:40 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 04:01:50 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 01:54:38 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_varint			v_mul(t_varint a, t_varint b)
 	V_LEN_TYPE		j;
 	int8_t			sign;
 
-	if (v_check(a, b, g_v[0], "mul") == 3)
+	if (!v_check(a, b, g_v[0], "mul"))
 		return (g_v[3]);
 	sign = a.sign * b.sign;
 	a.sign = 1;
@@ -107,8 +107,10 @@ t_varint			v_exp(t_varint v, t_varint e)
 	int8_t						j;
 	t_varint					ret;
 
-	if ((j = v_check(v, e, g_v[0], "exp")) != -1)
-		return (g_v[j]);
+	if (!v_check(v, e, g_v[0], "exp"))
+		return (g_v[3]);
+	if (is_g_v(0, e))
+		return (g_v[1]);
 	j = V_BIT_LEN - 1;
 	while (!(e.x[e.len - 1] >> j & 1))
 		j--;

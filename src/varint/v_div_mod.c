@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:02:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 04:04:38 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 01:36:54 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_varint				v_div(t_varint dend, t_varint sor)
 	t_varint		q;
 	int8_t			sign;
 
-	if (v_check(dend, sor, g_v[0], "div_mod") == 3)
+	if (!v_check(dend, sor, g_v[0], "div"))
 		return (g_v[3]);
 	sign = dend.sign * sor.sign;
 	dend.sign = 1;
@@ -70,10 +70,10 @@ t_varint				v_div(t_varint dend, t_varint sor)
 /*
 ** 	1]
 **	pos == false -> behave like % operator
-** ex: -12 % 5 will return -2
+**		ex: -12 % 5 will return -2
 **	2]
 **	pos == true	 -> behave like true euclidian divison reminder
-**	ex: -12 mod 5 will return 3
+**		ex: -12 mod 5 will return 3
 */
 
 t_varint				v_mod(t_varint dend, t_varint sor, bool eucl)
@@ -81,7 +81,7 @@ t_varint				v_mod(t_varint dend, t_varint sor, bool eucl)
 	t_varint		r;
 	int8_t			sign;
 
-	if (v_check(dend, sor, g_v[0], "div_mod") == 3)
+	if (!v_check(dend, sor, g_v[0], "div"))
 		return (g_v[3]);
 	sign = dend.sign;
 	dend.sign = 1;

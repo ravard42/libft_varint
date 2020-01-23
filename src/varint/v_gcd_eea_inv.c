@@ -6,14 +6,14 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:06:22 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 04:19:40 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 02:19:46 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
-** v_gcd et v_eea attendent des nombres positifs en entrée
+** v_gcd et v_eea sont ramené à des nombres positifs par soucis de commodité
 */
 
 t_varint		v_gcd(t_varint a, t_varint b)
@@ -21,8 +21,15 @@ t_varint		v_gcd(t_varint a, t_varint b)
 	t_varint		r[2];
 	t_varint		tmp;
 
-	a.sign = 1;
-	b.sign = 1;
+	if (!v_check(a, b, g_v[0], NULL))
+		return (g_v[3]);
+	if (a.sign != 1 || b.sign != 1)
+	{
+		ft_dprintf(2, "%sat least one sign switch to 1 in gcd%s\n",
+				KYEL, KNRM);
+		a.sign = 1;
+		b.sign = 1;
+	}
 	v_sort(&a, &b);
 	r[0] = a;
 	r[1] = b;
@@ -40,7 +47,7 @@ static void		verif_and_sort(t_varint *coef_r0, t_varint *coef_r1,
 {
 	if (a->sign != 1 || b->sign != 1)
 	{
-		ft_dprintf(2, "%ssigns must be 1 in eea%s\n",
+		ft_dprintf(2, "%sat least one sign switch to 1 in eea%s\n",
 				KYEL, KNRM);
 		a->sign = 1;
 		b->sign = 1;
@@ -53,8 +60,8 @@ static void		verif_and_sort(t_varint *coef_r0, t_varint *coef_r1,
 }
 
 /*
-** r[2] : 		deux derniers restes
-** coef_r1[2]; 	coef alpha et beta de r[1]
+** r[2]			: deux derniers restes
+** coef_r1[2]	: coef alpha et beta de r[1]
 */
 
 void			v_eea(t_varint *coef_r0, t_varint a, t_varint b)
@@ -63,6 +70,8 @@ void			v_eea(t_varint *coef_r0, t_varint a, t_varint b)
 	t_varint	coef_r1[2];
 	t_varint	tmp[2];
 
+	if (!v_check(a, b, g_v[0], NULL))
+		return ;
 	verif_and_sort(coef_r0, coef_r1, &a, &b);
 	r[0] = a;
 	r[1] = b;
@@ -85,6 +94,8 @@ t_varint		v_inv(t_varint v, t_varint mod)
 {
 	t_varint	tmp[2];
 
+	if (!v_check(v, g_v[0], mod, NULL))
+		return (g_v[3]);
 	if (!is_g_v(1, v_gcd(v, mod))
 		&& ft_dprintf(2, "%s%s%s", KRED, V_INV_MOD_ERR, KNRM))
 		return (g_v[3]);

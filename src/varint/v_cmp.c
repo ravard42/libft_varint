@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:21:26 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/22 04:22:16 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 01:58:27 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static bool		v_eq(t_varint a, t_varint b)
 
 bool			v_cmp(t_varint a, char *cmp, t_varint b)
 {
-	if (v_check(a, b, g_v[0], NULL) == 3)
+	if (!v_check(a, b, g_v[0], NULL))
 		return (false);
 	if (!ft_strcmp("-eq", cmp))
 		return (v_eq(a, b));
