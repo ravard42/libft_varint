@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:22:35 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 01:57:13 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 16:40:52 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void			v_print(t_varint *v, char *name, int64_t number, char *col)
 {
 	V_LEN_TYPE		i;
 
-	if (!v_check(*v, g_v[0], g_v[0], NULL))
+	if (!v_check(*v, g_v[0], g_v[0], "print"))
 		return ;
 	if (number == -2)
 		ft_dprintf(2, "%s<---VARINT %s------->%s\n", col, name, KNRM);

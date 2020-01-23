@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 02:29:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 02:17:21 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 16:25:01 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 # define V_ERR				"g_v_r has been called\n"
 # define V_BAD_LEN 			"v.len <= 0 or v.len > MAX_LEN\n"
+# define V_COR_LEN 			"corrupted varint : len and data doesn't match\n"
 # define V_BAD_SIGN 		"sign must be -1 or 1\n"
 # define V_NEG_POW 			"neg pow not handle\n"
 # define V_BAD_SUB 			"a < b in v_pos_sub\n"
@@ -61,7 +62,7 @@
 **		(beware that V_LEN_TYPE is signed)
 */
 
-# define V_MAX_LEN			33
+# define V_MAX_LEN			8
 # define V_LEN_TYPE			int16_t
 
 typedef struct				s_varint

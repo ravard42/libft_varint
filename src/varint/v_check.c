@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:39:02 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 01:56:02 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 16:27:29 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static bool				v_len_check(t_varint v)
 		return (false);
 	tmp = v.len;
 	v_len(&v);
-	if (v.len != tmp)
+	if (v.len != tmp && ft_dprintf(2, "%s%s%s\n", KRED, V_COR_LEN, KNRM))
 		return (false);
 	return (true);
 }
@@ -126,19 +126,26 @@ static bool				v_len_check(t_varint v)
 
 bool					v_check(t_varint a, t_varint b, t_varint m, char *op)
 {
+	bool ret;
+
+	ft_printf("%sIN v_check_%s%s\n", KGRN, op, KNRM);
 	if (is_g_v(3, a) || is_g_v(3, b) || is_g_v(3, m))
-		return (false);
-	if (!v_len_check(a) || !v_len_check(b) || !v_len_check(m))
-		return (false);
-	if (op && !ft_strcmp("add", op))
-		return (v_check_add(a, b));
-	if (op && !ft_strcmp("mul", op))
-		return (v_check_mul(a, b));
-	if (op && !ft_strcmp("exp", op))
-		return (v_check_exp(a, b));
-	if (op && !ft_strcmp("div", op))
-		return (v_check_div(a, b));
-	if (op && !ft_strcmp("expmod", op))
-		return (v_check_expmod(a, b, m));
-	return (true);
+		ret = false;
+	else if (!v_len_check(a) || !v_len_check(b) || !v_len_check(m))
+		ret = false;
+	else if (op && !ft_strcmp("add", op))
+		ret = v_check_add(a, b);
+	else if (op && !ft_strcmp("mul", op))
+		ret = v_check_mul(a, b);
+	else if (op && !ft_strcmp("exp", op))
+		ret = v_check_exp(a, b);
+	else if (op && !ft_strcmp("div", op))
+		ret = v_check_div(a, b);
+	else if (op && (!ft_strcmp("expmod", op)
+				|| !ft_strcmp("crt", op)))
+		ret = v_check_expmod(a, b, m);
+	else
+		ret = true;
+	ft_printf("%sOUT v_check_%s%s\n", KYEL, op, KNRM);
+	return (ret);
 }

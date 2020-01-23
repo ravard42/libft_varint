@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:06:22 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 02:19:46 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 16:31:49 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_varint		v_gcd(t_varint a, t_varint b)
 	t_varint		r[2];
 	t_varint		tmp;
 
-	if (!v_check(a, b, g_v[0], NULL))
+	if (!v_check(a, b, g_v[0], "gcd"))
 		return (g_v[3]);
 	if (a.sign != 1 || b.sign != 1)
 	{
@@ -70,13 +70,16 @@ void			v_eea(t_varint *coef_r0, t_varint a, t_varint b)
 	t_varint	coef_r1[2];
 	t_varint	tmp[2];
 
-	if (!v_check(a, b, g_v[0], NULL))
+	ft_printf("YOP\n");
+	if (!v_check(a, b, g_v[0], "eea"))
 		return ;
 	verif_and_sort(coef_r0, coef_r1, &a, &b);
 	r[0] = a;
 	r[1] = b;
+	ft_printf("YOP2\n");
 	while (!is_g_v(0, r[1]))
 	{
+		ft_printf("YOP3\n");
 		tmp[0] = v_mod(r[0], r[1], true);
 		tmp[1] = v_div(v_sub(r[0], tmp[0]), r[1]);
 		r[0] = r[1];
@@ -94,7 +97,7 @@ t_varint		v_inv(t_varint v, t_varint mod)
 {
 	t_varint	tmp[2];
 
-	if (!v_check(v, g_v[0], mod, NULL))
+	if (!v_check(v, g_v[0], mod, "inv"))
 		return (g_v[3]);
 	if (!is_g_v(1, v_gcd(v, mod))
 		&& ft_dprintf(2, "%s%s%s", KRED, V_INV_MOD_ERR, KNRM))
