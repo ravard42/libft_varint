@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 02:29:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 16:25:01 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 23:35:35 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@
 # define V_DER_2_BIG		"asn1 der header len must be <= 0xffff)\n"
 # define V_DER_COR			"der file corrupted\n"
 
-/*
-**# define V_TYPE 			uint64_t
-**# define V_MID_INF			0xffffffff
-**# define V_SUP				0xffffffffffffffff
-**# define V_LEN				8
-**# define V_BIT_LEN			64
-*/
+//
+//# define V_TYPE 			uint64_t
+//# define V_MID_INF			0xffffffff
+//# define V_SUP				0xffffffffffffffff
+//# define V_LEN				8
+//# define V_BIT_LEN			64
+//
 
 # define V_TYPE 			uint8_t
 # define V_MID_INF			0xf

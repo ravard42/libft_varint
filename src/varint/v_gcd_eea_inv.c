@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:06:22 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 16:31:49 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/23 20:49:41 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,13 @@ void			v_eea(t_varint *coef_r0, t_varint a, t_varint b)
 	t_varint	coef_r1[2];
 	t_varint	tmp[2];
 
-	ft_printf("YOP\n");
 	if (!v_check(a, b, g_v[0], "eea"))
 		return ;
 	verif_and_sort(coef_r0, coef_r1, &a, &b);
 	r[0] = a;
 	r[1] = b;
-	ft_printf("YOP2\n");
 	while (!is_g_v(0, r[1]))
 	{
-		ft_printf("YOP3\n");
 		tmp[0] = v_mod(r[0], r[1], true);
 		tmp[1] = v_div(v_sub(r[0], tmp[0]), r[1]);
 		r[0] = r[1];
