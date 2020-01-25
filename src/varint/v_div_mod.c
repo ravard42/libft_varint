@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:02:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 01:36:54 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/25 02:26:50 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_varint			v_shift_substract(t_varint dend, char *op, t_varint sor)
 			q = v_mul(q, g_v[2]);
 		else
 		{
-			r = v_sub(r, sor);
+			r = v_sub(r, sor, true);
 			q = v_mul(q, g_v[2]);
 			q.x[0] |= 1;
 		}
@@ -89,6 +89,6 @@ t_varint				v_mod(t_varint dend, t_varint sor, bool eucl)
 	r = v_shift_substract(dend, "mod", sor);
 	r.sign = (eucl) ? 1 : sign;
 	if (eucl && sign == -1)
-		r = v_sub(sor, r);
+		r = v_sub(sor, r, true);
 	return (r);
 }

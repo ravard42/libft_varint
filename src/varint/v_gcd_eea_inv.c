@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:06:22 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 20:49:41 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/25 02:27:40 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void			v_eea(t_varint *coef_r0, t_varint a, t_varint b)
 	while (!is_g_v(0, r[1]))
 	{
 		tmp[0] = v_mod(r[0], r[1], true);
-		tmp[1] = v_div(v_sub(r[0], tmp[0]), r[1]);
+		tmp[1] = v_div(v_sub(r[0], tmp[0], true), r[1]);
 		r[0] = r[1];
 		r[1] = tmp[0];
-		tmp[0] = v_sub(coef_r0[0], v_mul(tmp[1], coef_r1[0]));
-		tmp[1] = v_sub(coef_r0[1], v_mul(tmp[1], coef_r1[1]));
+		tmp[0] = v_sub(coef_r0[0], v_mul(tmp[1], coef_r1[0]), true);
+		tmp[1] = v_sub(coef_r0[1], v_mul(tmp[1], coef_r1[1]), true);
 		coef_r0[0] = coef_r1[0];
 		coef_r0[1] = coef_r1[1];
 		coef_r1[0] = tmp[0];

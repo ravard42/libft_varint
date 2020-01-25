@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 03:57:53 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 19:31:52 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/25 02:23:05 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,25 @@ static t_varint		v_add_pos(t_varint a, t_varint b)
 {
 	t_varint		ret;
 	V_LEN_TYPE		len;
+	int8_t			carr;
 	V_LEN_TYPE		i;
-	int8_t			c;
 
 	ret = g_v[0];
 	len = (a.len >= b.len) ? a.len : b.len;
-	c = 0;
+	carr = 0;
 	i = -1;
 	while (++i < len)
 	{
-		ret.x[i] = a.x[i] + b.x[i] + c;
-		c = add_carry(a.x[i], b.x[i], c);
+		ret.x[i] = a.x[i] + b.x[i] + carr;
+		carr = add_carry(a.x[i], b.x[i], carr);
 	}
-	ret.len = (c) ? i + 1 : i;
-	ret.x[i] += (c) ? c : 0;
+	if (carr)
+	{
+		ret.len = i + 1;
+		ret.x[i] = carr;
+	}
+	else
+		ret.len = i;
 	return (ret);
 }
 
@@ -69,12 +74,12 @@ static t_varint		v_sub_pos(t_varint a, t_varint b)
 	return (ret);
 }
 
-t_varint			v_add(t_varint a, t_varint b)
+t_varint			v_add(t_varint a, t_varint b, bool check)
 {
 	t_varint		ret;
 	bool			tmp;
 
-	if (!v_check(a, b, g_v[0], "add"))
+	if (check && !v_check(a, b, g_v[0], "add"))
 		return (g_v[3]);
 	if (a.sign == b.sign)
 	{
@@ -91,8 +96,8 @@ t_varint			v_add(t_varint a, t_varint b)
 	return (ret);
 }
 
-t_varint			v_sub(t_varint a, t_varint b)
+t_varint			v_sub(t_varint a, t_varint b, bool check)
 {
 	b.sign *= -1;
-	return (v_add(a, b));
+	return (v_add(a, b, check));
 }

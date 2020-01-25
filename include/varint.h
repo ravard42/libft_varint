@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 02:29:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 23:35:35 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/25 02:28:55 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define V_BAD_SIGN 		"sign must be -1 or 1\n"
 # define V_NEG_POW 			"neg pow not handle\n"
 # define V_BAD_SUB 			"a < b in v_pos_sub\n"
-# define V_ADD_OVFL			"overflow in v_add of v_sub, increase V_MAX_LEN\n"
+# define V_ADD_OVFL			"overflow in v_add or v_sub, increase V_MAX_LEN\n"
 # define V_MUL_OVFL			"overflow in v_mul, increase V_MAX_LEN\n"
 # define V_DIV_OVFL			"overflow in v_div or v_mod, increase V_MAX_LEN\n"
 # define V_EXP_OVFL			"overflow in v_exp, increase V_MAX_LEN\n"
@@ -62,14 +62,14 @@
 **		(beware that V_LEN_TYPE is signed)
 */
 
-# define V_MAX_LEN			8
+# define V_MAX_LEN			4
 # define V_LEN_TYPE			int16_t
 
 typedef struct				s_varint
 {
 	int8_t					sign;
-	V_TYPE					x[V_MAX_LEN];
 	V_LEN_TYPE				len;
+	V_TYPE					x[V_MAX_LEN];
 }							t_varint;
 
 /*
@@ -103,10 +103,10 @@ typedef struct s_read		t_read;
 */
 
 static const t_varint		g_v[4] = {
-	{1, {0}, 1},
-	{1, {1}, 1},
-	{1, {2}, 1},
-	{0, {0}, 1}
+	{1, 1, {0}},
+	{1, 1, {1}},
+	{1, 1, {2}},
+	{0, 1, {0}}
 };
 
 bool						is_g_v(int8_t i, t_varint v);
@@ -126,8 +126,8 @@ bool						v_check(t_varint a, t_varint b, t_varint m,
 void						v_sort(t_varint *a, t_varint *b);
 bool						v_cmp(t_varint a, char *cmp, t_varint b);
 int8_t						add_carry(V_TYPE a, V_TYPE b, int8_t c);
-t_varint					v_add(t_varint a, t_varint b);
-t_varint					v_sub(t_varint a, t_varint b);
+t_varint					v_add(t_varint a, t_varint b, bool check);
+t_varint					v_sub(t_varint a, t_varint b, bool check);
 t_varint					v_mul(t_varint a, t_varint b);
 t_varint					v_exp(t_varint v, t_varint e);
 t_varint					v_div(t_varint dend, t_varint sor);

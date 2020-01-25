@@ -6,39 +6,49 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:39:02 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/24 02:14:51 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/25 02:31:21 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static bool				v_check_add(t_varint a, t_varint b)
+/*
+** theoretical v_'op'_ovfl implementation (waiting that ASan bug is fixed)
+**
+*/
+
+static bool				v_add_ovfl(t_varint a, t_varint b)
 {
-	int64_t	mb_pow[2];
-	int64_t	sup;
+	int64_t	mb_pow[3];
 
 	mb_pow[0] = v_maxbin_pow(a);
 	mb_pow[1] = v_maxbin_pow(b);
-	sup = (mb_pow[0] >= mb_pow[1]) ? mb_pow[0] : mb_pow[1];
-	if (1 + (sup + 1) / V_BIT_LEN > V_MAX_LEN
+	mb_pow[2] = (mb_pow[0] >= mb_pow[1]) ? mb_pow[0] : mb_pow[1];
+	mb_pow[2] += a.sign == b.sign ? 1 : 0;
+	for (int i = 0; i < 3; i++)
+		ft_printf("mb_pow[%d] = %ld\n", i, mb_pow[i]);
+	if (1 + (mb_pow[2]) / V_BIT_LEN > V_MAX_LEN
 		&& ft_dprintf(2, "%s%s%s", KRED, V_ADD_OVFL, KNRM))
 		return (false);
 	return (true);
 }
 
-static bool				v_check_mul(t_varint a, t_varint b)
+static bool				v_mul_ovfl(t_varint a, t_varint b)
 {
-	int64_t	mb_pow[2];
+	int64_t	mb_pow[3];
 
 	mb_pow[0] = v_maxbin_pow(a);
 	mb_pow[1] = v_maxbin_pow(b);
-	if (1 + (mb_pow[0] + 1 + mb_pow[1] + 1) / V_BIT_LEN > V_MAX_LEN
+	mb_pow[2] = mb_pow[0] + mb_pow[1];
+//	for (int i = 0; i < 3; i++)
+//		ft_printf("mb_pow[%d] = %ld\n", i, mb_pow[i]);
+	if (1 + (mb_pow[2]) / V_BIT_LEN > V_MAX_LEN
 		&& ft_dprintf(2, "%s%s%s", KRED, V_MUL_OVFL, KNRM))
 		return (false);
 	return (true);
 }
 
-static bool				v_check_exp(t_varint v, t_varint e)
+static bool				v_exp_ovfl(t_varint v, t_varint e)
 {
 	int64_t		mb_pow[2];
 	uint64_t	e64;
@@ -62,7 +72,7 @@ static bool				v_check_exp(t_varint v, t_varint e)
 	return (true);
 }
 
-static bool				v_check_div(t_varint dividend, t_varint divisor)
+static bool				v_div_ovfl(t_varint dividend, t_varint divisor)
 {
 	int64_t	mb_pow[2];
 	int64_t	sup;
@@ -79,7 +89,7 @@ static bool				v_check_div(t_varint dividend, t_varint divisor)
 	return (true);
 }
 
-static bool				v_check_expmod(t_varint v, t_varint e, t_varint mod)
+static bool				v_expmod_ovfl(t_varint v, t_varint e, t_varint mod)
 {
 	int64_t	mb_pow[2];
 	int64_t	sup;
@@ -134,16 +144,16 @@ bool					v_check(t_varint a, t_varint b, t_varint m, char *op)
 	else if (!v_len_check(a) || !v_len_check(b) || !v_len_check(m))
 		ret = false;
 	else if (op && !ft_strcmp("add", op))
-		ret = v_check_add(a, b);
+		ret = v_add_ovfl(a, b);
 	else if (op && !ft_strcmp("mul", op))
-		ret = v_check_mul(a, b);
-	else if (op && !ft_strcmp("exp", op))
-		ret = v_check_exp(a, b);
-	else if (op && !ft_strcmp("div", op))
-		ret = v_check_div(a, b);
-	else if (op && (!ft_strcmp("expmod", op)
+		ret = v_mul_ovfl(a, b);
+	else if (0 && op && !ft_strcmp("exp", op))
+		ret = v_exp_ovfl(a, b);
+	else if (0 && op && !ft_strcmp("div", op))
+		ret = v_div_ovfl(a, b);
+	else if (0 && op && (!ft_strcmp("expmod", op)
 				|| !ft_strcmp("crt", op)))
-		ret = v_check_expmod(a, b, m);
+		ret = v_expmod_ovfl(a, b, m);
 	else
 		ret = true;
 	ft_printf("%sOUT v_check_%s%s\n", KYEL, op, KNRM);

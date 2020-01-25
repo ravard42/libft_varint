@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:38:00 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 00:25:46 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/25 02:26:21 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ int64_t					v_maxbin_pow(t_varint v)
 	j = V_BIT_LEN - 1;
 	while (!(v.x[v.len - 1] >> j & 1))
 		j--;
-	j += (v.len > 1) ? (v.len - 1) * V_BIT_LEN : 0;
+	j += (v.len - 1) * V_BIT_LEN;
 	return (j);
 }
 
 t_varint				v_inc(t_varint a)
 {
-	a = v_add(a, g_v[1]);
+	a = v_add(a, g_v[1], true);
 	return (a);
 }
 
 t_varint				v_dec(t_varint a)
 {
-	a = v_sub(a, g_v[1]);
+	a = v_sub(a, g_v[1], true);
 	return (a);
 }
 
