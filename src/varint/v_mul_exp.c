@@ -77,14 +77,14 @@ static void			partial_mul(t_varint *p_mul, t_varint a, V_TYPE bxj)
 	v_len(p_mul);
 }
 
-t_varint			v_mul(t_varint a, t_varint b)
+t_varint			v_mul(t_varint a, t_varint b, bool check)
 {
 	t_varint		ret;
 	t_varint		p_mul;
 	V_LEN_TYPE		j;
 	int8_t			sign;
 
-	if (!v_check(a, b, g_v[0], "mul"))
+	if (check && !v_check(&a, &b, &g_v[0], "mul"))
 		return (g_v[3]);
 	sign = a.sign * b.sign;
 	a.sign = 1;
@@ -97,7 +97,7 @@ t_varint			v_mul(t_varint a, t_varint b)
 		p_mul.len = j;
 		partial_mul(&p_mul, a, b.x[j]);
 		ret = v_add(ret, p_mul, false);
-		if (is_g_v(3, ret))
+		if (is_g_v(3, &ret))
 			return (ret);
 	}
 	ret.sign = sign;
@@ -115,9 +115,9 @@ t_varint			v_exp(t_varint v, t_varint e)
 	int8_t						j;
 	t_varint					ret;
 
-	if (!v_check(v, e, g_v[0], "exp"))
+	if (!v_check(&v, &e, &g_v[0], "exp"))
 		return (g_v[3]);
-	if (is_g_v(0, e))
+	if (is_g_v(0, &e))
 		return (g_v[1]);
 	j = V_BIT_LEN - 1;
 	while (!(e.x[e.len - 1] >> j & 1))
@@ -129,9 +129,9 @@ t_varint			v_exp(t_varint v, t_varint e)
 		j = (i == e.len - 1) ? j : V_BIT_LEN;
 		while (--j >= 0)
 		{
-			ret = v_mul(ret, ret);
+			ret = v_mul(ret, ret, false);
 			if (e.x[i] >> j & 1)
-				ret = v_mul(ret, v);
+				ret = v_mul(ret, v, false);
 		}
 	}
 	return (ret);

@@ -78,19 +78,22 @@ t_varint			v_add(t_varint a, t_varint b, bool check)
 {
 	t_varint		ret;
 	bool			tmp;
+	t_varint		abs[2];
 
-	if (check && !v_check(a, b, g_v[0], "add"))
+	if (check && !v_check(&a, &b, &g_v[0], "add"))
 		return (g_v[3]);
+	abs[0] = v_abs(a);
+	abs[1] = v_abs(b);
 	if (a.sign == b.sign)
 	{
-		ret = v_add_pos(v_abs(a), v_abs(b));
+		ret = v_add_pos(abs[0], abs[1]);
 		ret.sign = a.sign;
 	}
 	else
 	{
-		tmp = v_cmp(v_abs(a), "-ge", v_abs(b));
-		ret = tmp ? v_sub_pos(v_abs(a), v_abs(b))
-			: v_sub_pos(v_abs(b), v_abs(a));
+		tmp = v_cmp(abs, "-ge", abs + 1, false);
+		ret = tmp ? v_sub_pos(abs[0], abs[1])
+			: v_sub_pos(abs[1], abs[0]);
 		ret.sign = tmp ? a.sign : b.sign;
 	}
 	return (ret);

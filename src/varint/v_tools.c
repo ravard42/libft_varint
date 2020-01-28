@@ -12,18 +12,28 @@
 
 #include "libft.h"
 
-bool			is_g_v(int8_t i, t_varint v)
+bool			is_g_v(int8_t i, t_varint *v)
 {
 	if (i == 3)
 	{
-		if (v.sign != -1 && v.sign != 1
+		if (v->sign != -1 && v->sign != 1
 			&& ft_dprintf(2, "%s%s%s", KRED, V_ERR, KNRM))
 			return (true);
 		return (false);
 	}
-	v.sign = (i == 0) ? 1 : v.sign;
-	if (v.sign == 1 && v.len == 1 && v.x[0] == (V_TYPE)i)
-		return (true);
+// ET VOILA PK C EST CHAUD DE RAPATRIER CES COPY EN PTR!!!
+//
+//	v->sign = (i == 0) ? 1 : v->sign;
+//	if (v->sign == 1 && v->len == 1 && v->x[0] == (V_TYPE)i)
+//		return (true);
+	if (v->len == 1)
+	{
+		if ((v->sign == 1 || v->sign == -1) && v->x[0] == (V_TYPE)i)
+			return (true);
+		if (v->sign == 1 && v->len == 1 && v->x[0] == (V_TYPE)i)
+			return (true);
+		
+	}
 	return (false);
 }
 
@@ -58,11 +68,13 @@ t_varint		v_init(char sign, V_TYPE *src, V_LEN_TYPE len)
 	return (v);
 }
 
-void			v_sort(t_varint *a, t_varint *b)
+void			v_sort(t_varint *a, t_varint *b, bool check)
 {
 	t_varint	tmp;
 
-	if (v_cmp(*a, "-lt", *b))
+	if (check && !v_check(a, b, &g_v[0], "sort"))
+		return ;
+	if (v_cmp(a, "-lt", b, false))
 	{
 		tmp = *a;
 		*a = *b;
@@ -74,7 +86,7 @@ void			v_print(t_varint *v, char *name, int64_t number, char *col)
 {
 	V_LEN_TYPE		i;
 
-	if (!v_check(*v, g_v[0], g_v[0], "print"))
+	if (!v_check(v, &g_v[0], &g_v[0], "print"))
 		return ;
 	if (number == -2)
 		ft_dprintf(2, "%s<---VARINT %s------->%s\n", col, name, KNRM);

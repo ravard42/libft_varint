@@ -12,16 +12,19 @@
 
 #include "libft.h"
 
-int64_t					v_maxbin_pow(t_varint v)
+int64_t					v_maxbin_pow(t_varint *v)
 {
 	int64_t	j;
 
 	if (is_g_v(0, v))
 		return (-1);
 	j = V_BIT_LEN - 1;
-	while (!(v.x[v.len - 1] >> j & 1))
+	while (j != -1 && !(v->x[v->len - 1] >> j & 1))
 		j--;
-	j += (v.len - 1) * V_BIT_LEN;
+	if (j == -1
+		&& ft_dprintf(2, "%s%s%s\n", KRED, V_COR_LEN, KNRM))
+		return (-1);
+	j += (v->len - 1) * V_BIT_LEN;
 	return (j);
 }
 
