@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:02:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/25 02:26:50 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/29 03:25:12 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ t_varint				v_div(t_varint dend, t_varint sor, bool check)
 **		ex: -12 mod 5 will return 3
 */
 
-t_varint				v_mod(t_varint dend, t_varint sor, bool eucl, bool check)
+t_varint				v_mod(t_varint dend, t_varint sor, bool eucl,
+		bool check)
 {
 	t_varint		r;
 	int8_t			sign;

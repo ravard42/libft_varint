@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:38:00 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/25 02:26:21 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/29 04:29:42 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ int64_t					v_maxbin_pow(t_varint *v)
 	return (j);
 }
 
-t_varint				v_inc(t_varint a)
+t_varint				*v_inc(t_varint *a)
 {
-	a = v_add(a, g_v[1], true);
+	*a = v_add(*a, g_v[1], true);
 	return (a);
 }
 
-t_varint				v_dec(t_varint a)
+t_varint				*v_dec(t_varint *a)
 {
-	a = v_sub(a, g_v[1], true);
+	*a = v_sub(*a, g_v[1], true);
 	return (a);
 }
 

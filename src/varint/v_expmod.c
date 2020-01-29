@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:05:03 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 21:58:49 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/29 03:26:12 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod, bool eucl)
 		*ret = v_mod(*ret, *mod, eucl, false);
 	}
 }
-
 
 t_varint	v_expmod(t_varint v, t_varint e, t_varint mod, bool eucl)
 {

@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:22:35 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/23 21:16:35 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/29 04:38:01 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ bool			is_g_v(int8_t i, t_varint *v)
 			return (true);
 		if (v->sign == 1 && v->len == 1 && v->x[0] == (V_TYPE)i)
 			return (true);
-		
 	}
 	return (false);
 }

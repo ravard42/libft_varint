@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:39:02 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/25 02:31:21 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/29 03:24:29 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 ** a = 1 * 2^n +  a_n-1 * 2^(n - 1) + ... + 2^0 * a_0
 ** b = 1 * 2^m +  b_m-1 * 2^(m - 1) + ... + 2^0 * b_0
 **
-** maxbin_pow(a) = (a != 0) ? n : -1 
+** maxbin_pow(a) = (a != 0) ? n : -1
 ** maxbin_pow(b) = (b != 0) ? m : -1
 */
-
 
 /*
 ** a.sign == b.sign
@@ -63,7 +62,7 @@ static bool				v_mul_check(t_varint *a, t_varint *b)
 
 /*
 **	(2^a)^b = 2^(a * b)
-** 	
+**
 **		v < 2^(maxbin_pow(v) + 1)
 **	=>	v^e < 2^((maxbin_pow(v) + 1) * e)
 **
@@ -80,7 +79,7 @@ static bool				v_mul_check(t_varint *a, t_varint *b)
 static bool				v_exp_check(t_varint *v, t_varint *e)
 {
 	int8_t		i;
-	uint64_t		e64;
+	uint64_t	e64;
 	int64_t		mb_pow[2];
 
 	if (e->sign == -1
@@ -170,7 +169,8 @@ static bool				v_len_check(t_varint *v)
 **
 **	morevover if op make sense:
 **	v_check estimates if the resultat of op will not overflow V_MAX_LEN
-**	and verify that the operation is well defined (ex: divison by 0 same for a negative exponent)
+**	and verify that the operation is well defined
+**	(ex: divison by 0 same for a negative exponent)
 */
 
 bool					v_check(t_varint *a, t_varint *b, t_varint *m, char *op)

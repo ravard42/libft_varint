@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 02:29:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/25 02:28:55 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/29 04:59:41 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,19 @@
 # define V_DER_2_BIG		"asn1 der header len must be <= 0xffff)\n"
 # define V_DER_COR			"der file corrupted\n"
 
+# define V_TYPE 			uint64_t
+# define V_MID_INF			0xffffffff
+# define V_SUP				0xffffffffffffffff
+# define V_LEN				8
+# define V_BIT_LEN			64
 
-//# define V_TYPE 			uint64_t
-//# define V_MID_INF			0xffffffff
-//# define V_SUP				0xffffffffffffffff
-//# define V_LEN				8
-//# define V_BIT_LEN			64
-
-# define V_TYPE 			uint8_t
-# define V_MID_INF			0xf
-# define V_SUP				0xff
-# define V_LEN				1
-# define V_BIT_LEN			8
+/*
+**# define V_TYPE 			uint8_t
+**# define V_MID_INF			0xf
+**# define V_SUP				0xff
+**# define V_LEN				1
+**# define V_BIT_LEN			8
+*/
 
 /*
 **	overflow protection note:
@@ -61,7 +62,7 @@
 **		(beware that V_LEN_TYPE is signed)
 */
 
-# define V_MAX_LEN			8
+# define V_MAX_LEN			2
 # define V_LEN_TYPE			int16_t
 
 typedef struct				s_varint
@@ -115,14 +116,15 @@ void						v_print(t_varint *v, char *name, int64_t number,
 		char *col);
 int64_t						v_maxbin_pow(t_varint *v);
 t_varint					v_abs(t_varint v);
-t_varint					v_inc(t_varint a);
-t_varint					v_dec(t_varint a);
+t_varint					*v_inc(t_varint *a);
+t_varint					*v_dec(t_varint *a);
 t_varint					v_rand(V_LEN_TYPE len, bool neg);
 
 bool						v_check(t_varint *a, t_varint *b, t_varint *m,
 		char *op);
 
-bool						v_cmp(t_varint *a, char *cmp, t_varint *b, bool check);
+bool						v_cmp(t_varint *a, char *cmp, t_varint *b,
+		bool check);
 void						v_sort(t_varint *a, t_varint *b, bool check);
 int8_t						add_carry(V_TYPE a, V_TYPE b, int8_t c);
 t_varint					v_add(t_varint a, t_varint b, bool check);
@@ -130,7 +132,8 @@ t_varint					v_sub(t_varint a, t_varint b, bool check);
 t_varint					v_mul(t_varint a, t_varint b, bool check);
 t_varint					v_exp(t_varint v, t_varint e);
 t_varint					v_div(t_varint dend, t_varint sor, bool check);
-t_varint					v_mod(t_varint dend, t_varint sor, bool pos, bool check);
+t_varint					v_mod(t_varint dend, t_varint sor, bool pos,
+		bool check);
 t_varint					v_expmod(t_varint v, t_varint e, t_varint mod,
 		bool pos);
 t_varint					v_gcd(t_varint a, t_varint b);
