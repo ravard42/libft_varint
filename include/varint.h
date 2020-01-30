@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 02:29:11 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/30 04:09:26 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/30 06:54:07 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # define V_BAD_SUB 			"a < b in v_pos_sub\n"
 # define V_ADD_OVFL			"overflow in v_add or v_sub, increase V_MAX_LEN\n"
 # define V_MUL_OVFL			"overflow in v_mul, increase V_MAX_LEN\n"
-# define V_DIV_OVFL			"overflow in v_div or v_mod, increase V_MAX_LEN\n"
 # define V_EXP_OVFL			"overflow in v_exp, increase V_MAX_LEN\n"
 # define V_EXP_LIM			"expo lim value overtaken in v_exp\n"
 # define V_EXPMOD_OVFL		"overflow in v_expmod, increase V_MAX_LEN\n"
@@ -91,6 +90,7 @@ typedef struct				s_der_d
 }							t_der_d;
 
 typedef struct s_read		t_read;
+typedef bool				(*t_op_check)(t_varint *[3]);
 
 /*
 **		g_v array regroups often used varint values
@@ -122,6 +122,11 @@ t_varint					v_rand(V_LEN_TYPE len, bool neg);
 
 bool						v_check(t_varint *a, t_varint *b, t_varint *m,
 		char *op);
+bool						v_add_check(t_varint *v[3]);
+bool						v_mul_check(t_varint *v[3]);
+bool						v_exp_check(t_varint *v[3]);
+bool						v_div_check(t_varint *v[3]);
+bool						v_expmod_check(t_varint *v[3]);
 
 bool						v_cmp(t_varint *a, char *cmp, t_varint *b,
 		bool check);
