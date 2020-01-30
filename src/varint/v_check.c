@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:39:02 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/29 03:24:29 by ravard           ###   ########.fr       */
+/*   Updated: 2020/01/30 02:08:45 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,10 @@ bool					v_check(t_varint *a, t_varint *b, t_varint *m, char *op)
 	bool ret;
 
 //	ft_printf("%sIN v_check_%s%s\n", KGRN, op, KNRM);
+	is_g_v(0, a);
+	is_g_v(0, b);
+	is_g_v(0, m);
+
 	if (is_g_v(3, a) || is_g_v(3, b) || is_g_v(3, m))
 		ret = false;
 	else if (!v_len_check(a) || !v_len_check(b) || !v_len_check(m))
