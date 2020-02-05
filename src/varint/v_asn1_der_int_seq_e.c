@@ -54,47 +54,27 @@ static int8_t	put_header(uint8_t *h, uint8_t type, unsigned int len)
 
 static int		set_sub_header(uint8_t *h, t_varint v)
 {
-	V_TYPE	mask;
-	int8_t	k;
-	int		val_len;
+	uint8_t	mask;
 	int		tot_len;
 
-	mask = 0xff;
-	k = V_LEN - 1;
-	while (k != 0
-		&& !(v.x[v.len - 1] & (mask << 8 * k)))
-		--k;
-	val_len = v.len * V_LEN - (V_LEN - 1) + k;
 	mask = 0x80;
-	h[5] = (v.x[v.len - 1] & (mask << 8 * k)) ? 1 : 0;
-	if (put_header(h, 0x02, h[5] + val_len) == -1)
+	h[5] = v.x[v.len - 1] & mask ? 1 : 0;
+	if (put_header(h, 0x02, h[5] + v.len) == -1)
 		return (-1);
-	tot_len = h[0] + h[5] + val_len;
+	tot_len = h[0] + h[5] + v.len;
 	return (tot_len);
 }
 
 static void		put_value(int fd_out, t_varint *v)
 {
-	V_TYPE		mask;
-	int8_t		k;
-	V_LEN_TYPE	j;
+	int16_t		j;
 	uint8_t		buff;
 
-	mask = 0xff;
-	k = V_LEN - 1;
-	while (k != 0
-		&& !(v->x[v->len - 1] & (mask << 8 * k)))
-		k--;
 	j = v->len;
 	while (--j >= 0)
 	{
-		k = (j == v->len - 1) ? k : V_LEN - 1;
-		while (k >= 0)
-		{
-			buff = v->x[j] >> 8 * k;
-			write(fd_out, &buff, 1);
-			k--;
-		}
+		buff = v->x[j]; //>> 8 * k;
+		write(fd_out, &buff, 1);
 	}
 }
 

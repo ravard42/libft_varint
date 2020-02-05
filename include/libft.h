@@ -21,6 +21,7 @@
 # include <wchar.h>
 # include <stdbool.h>
 # include "varint.h"
+# include "nnaumenk_libft.h"
 
 # define KNRM  "\x1B[0m"
 # define KRED  "\x1B[31;1m"

@@ -24,9 +24,9 @@ bool			is_g_v(int8_t i, t_varint *v)
 	if (v->len == 1)
 	{
 		if ((v->sign == 1 || v->sign == -1)
-			&& v->x[0] == (V_TYPE)i && (v->sign = 1))
+			&& v->x[0] == (uint8_t)i && (v->sign = 1))
 			return (true);
-		if (v->sign == 1 && v->len == 1 && v->x[0] == (V_TYPE)i)
+		if (v->sign == 1 && v->len == 1 && v->x[0] == (uint8_t)i)
 			return (true);
 	}
 	return (false);
@@ -34,7 +34,7 @@ bool			is_g_v(int8_t i, t_varint *v)
 
 void			v_len(t_varint *v)
 {
-	V_LEN_TYPE		i;
+	int16_t		i;
 
 	i = V_MAX_LEN;
 	while (--i > 0)
@@ -44,13 +44,13 @@ void			v_len(t_varint *v)
 }
 
 /*
-** load len V_TYPE from V_TYPE *src in a varint variable n and return it
+** load len uint8_t from uint8_t *src in a varint variable n and return it
 */
 
-t_varint		v_init(char sign, V_TYPE *src, V_LEN_TYPE len)
+t_varint		v_init(char sign, uint8_t *src, int16_t len)
 {
 	t_varint		v;
-	V_LEN_TYPE		i;
+	int16_t		i;
 
 	if (sign != -1 && sign != 1
 		&& ft_dprintf(2, "%s%s%s", KRED, V_BAD_SIGN, KNRM))
@@ -82,26 +82,26 @@ void			v_sort(t_varint *a, t_varint *b, bool check)
 	}
 }
 
-void			v_print(t_varint *v, char *name, int64_t number, char *col)
+void			v_print(char *name, t_varint *v)
 {
-	V_LEN_TYPE		i;
+	int16_t		i;
+	int8_t		j;
 
 	if (!v_check(v, NULL, NULL, "print"))
 		return ;
-	if (number == -2)
-		ft_dprintf(2, "%s<---VARINT %s------->%s\n", col, name, KNRM);
-	else if (number >= -1)
-		ft_dprintf(2, "%s<---VARINT %s %ld------->%s\n", col, name,
-				number, KNRM);
-	ft_dprintf(2, "v->sign = %hd\n", v->sign);
-	ft_dprintf(2, "v->len = %d\n", v->len);
-	i = v->len;
-	while (--i != -1)
+	ft_printf("%s|%hhd|%hd:\n", name, v->sign, v->len);
+	i = v->len - 1;
+	while (i >= 0)
 	{
-		if (V_LEN == 1)
-			ft_dprintf(2, "(i, x) = (%u, %02x)\n", i, v->x[i]);
-		else
-			ft_dprintf(2, "(i, x) = (%lu, %016lx)\n", i, v->x[i]);
+		ft_printf("    ");
+		j = -1;
+		while (++j < 15 && i - j >= 0)
+		{
+			ft_printf("%02x", v->x[i - j]);
+			if (i - (j + 1) >= 0)
+				ft_printf(":");
+		}
+		i -= 15;	
+		ft_printf("\n");
 	}
-	ft_dprintf(2, "%s<---------------------->\n%s", col, KNRM);
 }

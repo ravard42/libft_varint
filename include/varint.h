@@ -35,20 +35,11 @@
 # define V_DER_INT_SEQ_ONLY	"asn1 der alg only handle sequence of integers\n"
 # define V_DER_2_BIG		"asn1 der header len must be <= 0xffff)\n"
 # define V_DER_COR			"der file corrupted\n"
+# define V_DER_OVFL 			"can't store asn1_der number, increase V_MAX_LEN\n"
 
-# define V_TYPE 			uint64_t
-# define V_MID_INF			0xffffffff
-# define V_SUP				0xffffffffffffffff
-# define V_LEN				8
-# define V_BIT_LEN			64
-
-//
-//# define V_TYPE 			uint8_t
-//# define V_MID_INF			0xf
-//# define V_SUP				0xff
-//# define V_LEN				1
-//# define V_BIT_LEN			8
-//
+#  define V_MID_INF			0xf
+#  define V_SUP				0xff
+#  define V_BIT_LEN			8
 
 /*
 **	overflow protection note:
@@ -57,18 +48,18 @@
 **		we need at most to twice the size of the operands
 **		we then add one more data block for the algorithm needs.
 **		exemple with len = 16 -> 16 * 2 + 1 = 33
-**	2] V_LEN_TYPE must not overflow with V_MAX_LEN
-**		(beware that V_LEN_TYPE is signed)
+**	2] int16_t must not overflow with V_MAX_LEN
+**		(beware that len is signed)
 */
 
-# define V_MAX_LEN			4
-# define V_LEN_TYPE			int16_t
+# define V_MAX_LEN			256
+# define int16_t			int16_t
 
 typedef struct				s_varint
 {
 	int8_t					sign;
-	V_LEN_TYPE				len;
-	V_TYPE					x[V_MAX_LEN];
+	int16_t				len;
+	uint8_t					x[V_MAX_LEN];
 }							t_varint;
 
 /*
@@ -111,14 +102,13 @@ static const t_varint					g_v[4] = {
 
 bool						is_g_v(int8_t i, t_varint *v);
 void						v_len(t_varint *v);
-t_varint					v_init(char sign, V_TYPE *src, V_LEN_TYPE len);
-void						v_print(t_varint *v, char *name, int64_t number,
-		char *col);
+t_varint					v_init(char sign, uint8_t *src, int16_t len);
+void						v_print(char *name, t_varint *v);
 int64_t						v_maxbin_pow(t_varint *v);
 t_varint					v_abs(t_varint v);
 t_varint					*v_inc(t_varint *a);
 t_varint					*v_dec(t_varint *a);
-t_varint					v_rand(V_LEN_TYPE len, bool neg);
+t_varint					v_rand(int16_t len, bool neg);
 
 bool						v_check(t_varint *a, t_varint *b, t_varint *m,
 		char *op);
@@ -131,7 +121,7 @@ bool						v_expmod_check(t_varint *v[3]);
 bool						v_cmp(t_varint *a, char *cmp, t_varint *b,
 		bool check);
 void						v_sort(t_varint *a, t_varint *b, bool check);
-int8_t						add_carry(V_TYPE a, V_TYPE b, int8_t c);
+int8_t						add_carry(uint8_t a, uint8_t b, int8_t c);
 t_varint					v_add(t_varint a, t_varint b, bool check);
 t_varint					v_sub(t_varint a, t_varint b, bool check);
 t_varint					v_mul(t_varint a, t_varint b, bool check);

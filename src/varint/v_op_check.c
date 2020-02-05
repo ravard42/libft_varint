@@ -88,7 +88,7 @@ bool			v_exp_check(t_varint *v[3])
 	if (v[1]->sign == -1
 		&& ft_dprintf(2, "%s%s%s", KRED, V_NEG_POW, KNRM))
 		return (false);
-	if (v[1]->len * sizeof(V_TYPE) > 8
+	if (v[1]->len * sizeof(uint8_t) > 8
 		&& ft_dprintf(2, "%s%s%s", KRED, V_EXP_LIM, KNRM))
 		return (false);
 	e64 = 0;

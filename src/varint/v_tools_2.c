@@ -47,12 +47,12 @@ t_varint				v_abs(t_varint v)
 }
 
 /*
-** load len pseudo random V_TYPE from /dev/urandom in a varint variable and return it
+** load len pseudo random uint8_t from /dev/urandom in a varint variable and return it
 */
 
-t_varint				v_rand(V_LEN_TYPE len, bool neg)
+t_varint				v_rand(int16_t len, bool neg)
 {
-	V_TYPE			rand_n[len];
+	uint8_t			rand_n[len];
 	t_varint		n;
 	uint8_t			sign;
 
@@ -63,7 +63,7 @@ t_varint				v_rand(V_LEN_TYPE len, bool neg)
 	}
 	else
 		sign = 1;
-	ft_rand(rand_n, len * V_LEN);
+	ft_rand(rand_n, len);
 	n = v_init(sign, rand_n, len);
 	return (n);
 }

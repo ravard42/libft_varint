@@ -14,7 +14,7 @@
 
 static bool				v_len_check(t_varint *v)
 {
-	V_LEN_TYPE		tmp;
+	int16_t		tmp;
 
 	if ((v->len <= 0 || v->len > V_MAX_LEN)
 		&& ft_dprintf(2, "%s%s%s", KRED, V_BAD_LEN, KNRM))

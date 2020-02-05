@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int8_t				add_carry(V_TYPE a, V_TYPE b, int8_t c)
+int8_t				add_carry(uint8_t a, uint8_t b, int8_t c)
 {
 	int8_t			d;
 
@@ -27,9 +27,9 @@ int8_t				add_carry(V_TYPE a, V_TYPE b, int8_t c)
 static t_varint		v_add_pos(t_varint a, t_varint b)
 {
 	t_varint		ret;
-	V_LEN_TYPE		len;
+	int16_t		len;
 	int8_t			carr;
-	V_LEN_TYPE		i;
+	int16_t		i;
 
 	ret = g_v[0];
 	len = (a.len >= b.len) ? a.len : b.len;
@@ -57,8 +57,8 @@ static t_varint		v_add_pos(t_varint a, t_varint b)
 static t_varint		v_sub_pos(t_varint a, t_varint b)
 {
 	t_varint		ret;
-	V_LEN_TYPE		len;
-	V_LEN_TYPE		i;
+	int16_t		len;
+	int16_t		i;
 	uint8_t			c;
 
 	ret = g_v[0];

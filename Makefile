@@ -1,8 +1,6 @@
 CC = gcc
-#CC = clang
 #FLAGS = -Wall -Wextra -Werror
 #FLAGS = -Wall -Wextra
-#FLAGS = -Wall -Wextra -ggdb -fsanitize=address
 FLAGS = -Wall -Wextra -fsanitize=address -g
 NAME = libft.a
 SRC =	src/ft_memalloc.c\
@@ -61,9 +59,33 @@ SRC =	src/ft_memalloc.c\
 		src/varint/v_crt.c\
 		src/varint/v_asn1_der_int_seq_e.c\
 		src/varint/v_asn1_der_int_seq_d.c\
+		src/nnaumenk/ft_bzero.c						\
+		src/nnaumenk/ft_memrev.c						\
+		src/nnaumenk/bigint/ft_bigint_add.c\
+		src/nnaumenk/bigint/ft_bigint_bigger.c\
+		src/nnaumenk/bigint/ft_bigint_decrement.c\
+		src/nnaumenk/bigint/ft_bigint_del.c\
+		src/nnaumenk/bigint/ft_bigint_div.c\
+		src/nnaumenk/bigint/ft_bigint_div_safe.c\
+		src/nnaumenk/bigint/ft_bigint_dup.c\
+		src/nnaumenk/bigint/ft_bigint_dup_value.c\
+		src/nnaumenk/bigint/ft_bigint_equal.c\
+		src/nnaumenk/bigint/ft_bigint_equ_bigger.c\
+		src/nnaumenk/bigint/ft_bigint_increment.c\
+		src/nnaumenk/bigint/ft_bigint_isnull.c\
+		src/nnaumenk/bigint/ft_bigint_isvalue.c\
+		src/nnaumenk/bigint/ft_bigint_mul.c\
+		src/nnaumenk/bigint/ft_bigint_normalize.c\
+		src/nnaumenk/bigint/ft_bigint_print.c\
+		src/nnaumenk/bigint/ft_bigint_shl.c\
+		src/nnaumenk/bigint/ft_bigint_shl_overflow.c\
+		src/nnaumenk/bigint/ft_bigint_shr.c\
+		src/nnaumenk/bigint/ft_bigint_smaller.c\
+		src/nnaumenk/bigint/ft_bigint_sub.c\
+		src/nnaumenk/ft_pow_mod.c						\
 
 OBJ = $(SRC:.c=.o)
-INCLUDE = ./include/
+INCLUDE = ./include/ -I ./include/nnaumenk
 
 all: $(NAME)
 
