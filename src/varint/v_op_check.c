@@ -88,16 +88,13 @@ bool			v_exp_check(t_varint *v[3])
 	if (v[1]->sign == -1
 		&& ft_dprintf(2, "%s%s%s", KRED, V_NEG_POW, KNRM))
 		return (false);
-	if (v[1]->len * sizeof(uint8_t) > 8
+	if (v[1]->len > 2
 		&& ft_dprintf(2, "%s%s%s", KRED, V_EXP_LIM, KNRM))
 		return (false);
 	e64 = 0;
 	i = -1;
 	while (++i < v[1]->len)
 		e64 += (uint64_t)v[1]->x[i] << V_BIT_LEN * i;
-	if (e64 > 0xffff
-		&& ft_dprintf(2, "%s%s%s", KRED, V_EXP_LIM, KNRM))
-		return (false);
 	mb_pow[0] = v_maxbin_pow(v[0]);
 	mb_pow[1] = (mb_pow[0] + 1) * e64;
 	if (1 + mb_pow[1] / V_BIT_LEN > V_MAX_LEN

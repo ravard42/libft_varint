@@ -49,7 +49,7 @@
 #  define V_SUP				0xff
 #  define V_BIT_LEN			8
 
-# define V_MAX_LEN			256
+# define V_MAX_LEN			512
 
 /*
 **	overflow protection note:

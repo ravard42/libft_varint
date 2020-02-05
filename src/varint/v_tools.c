@@ -24,9 +24,9 @@ bool			is_g_v(int8_t i, t_varint *v)
 	if (v->len == 1)
 	{
 		if ((v->sign == 1 || v->sign == -1)
-			&& v->x[0] == (uint8_t)i && (v->sign = 1))
+			&& v->x[0] == i && (v->sign = 1))
 			return (true);
-		if (v->sign == 1 && v->len == 1 && v->x[0] == (uint8_t)i)
+		if (v->sign == 1 && v->x[0] == i)
 			return (true);
 	}
 	return (false);

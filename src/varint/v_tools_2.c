@@ -47,14 +47,14 @@ t_varint				v_abs(t_varint v)
 }
 
 /*
-** load len pseudo random uint8_t from /dev/urandom in a varint variable and return it
+** load len pseudo random uint8_t chunk from /dev/urandom in a varint variable and return it
 */
 
 t_varint				v_rand(int16_t len, bool neg)
 {
 	uint8_t			rand_n[len];
 	t_varint		n;
-	uint8_t			sign;
+	int8_t			sign;
 
 	if (neg)
 	{

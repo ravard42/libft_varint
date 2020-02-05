@@ -37,7 +37,7 @@ t_varint	v_expmod(t_varint v, t_varint e, t_varint mod, bool check)
 	if (is_g_v(0, &e) && !is_g_v(1, &mod))
 		return (g_v[1]);
 	j = V_BIT_LEN - 1;
-	while (((uint8_t)e.x[e.len - 1] >> j & 1) == 0 && j)
+	while ((e.x[e.len - 1] >> j & 1) == 0 && j)
 		j--;
 	ret = v_mod(v, mod, true, false);
 	i = e.len;
