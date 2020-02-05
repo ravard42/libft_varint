@@ -19,6 +19,10 @@
 ** VARIOUS SIZE INT STRUCT
 */
 
+/*
+** ERROR MSGS
+*/
+
 # define V_ERR				"g_v_r has been called\n"
 # define V_BAD_LEN 			"v.len <= 0 or v.len > MAX_LEN\n"
 # define V_COR_LEN 			"corrupted varint : len and data doesn't match\n"
@@ -37,23 +41,25 @@
 # define V_DER_COR			"der file corrupted\n"
 # define V_DER_OVFL 			"can't store asn1_der number, increase V_MAX_LEN\n"
 
+/*
+**
+*/
+
 #  define V_MID_INF			0xf
 #  define V_SUP				0xff
 #  define V_BIT_LEN			8
+
+# define V_MAX_LEN			256
 
 /*
 **	overflow protection note:
 **	1] when computing operations on varint numbers,
 **		particularly multiplications,
-**		we need at most to twice the size of the operands
-**		we then add one more data block for the algorithm needs.
-**		exemple with len = 16 -> 16 * 2 + 1 = 33
-**	2] int16_t must not overflow with V_MAX_LEN
-**		(beware that len is signed)
+**		we need at most twice of operand sup len
+**		exemple: mul on 2 varint of len 16 needs 32 chunks
+**	2] v.len must not overflow with V_MAX_LEN
+**		(beware that v.len is signed so V_MAX_LEN <= 0x7fff)
 */
-
-# define V_MAX_LEN			256
-# define int16_t			int16_t
 
 typedef struct				s_varint
 {
