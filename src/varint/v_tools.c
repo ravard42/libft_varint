@@ -32,11 +32,17 @@ bool			is_g_v(int8_t i, t_varint *v)
 	return (false);
 }
 
-void			v_len(t_varint *v)
+/*
+**	v_len check for the len of v and return it.
+**	depending on msc (Most Significant Chunk) we can limit the range of the check
+**	if we need full viewing on v data we set msc to V_MAX_LEN (cost more computation time)
+*/
+
+void			v_len(t_varint *v, int16_t msc)
 {
 	int16_t		i;
 
-	i = V_MAX_LEN;
+	i = msc;
 	while (--i > 0)
 		if (v->x[i])
 			break ;
@@ -56,29 +62,56 @@ t_varint		v_init(char sign, uint8_t *src, int16_t len)
 		&& ft_dprintf(2, "%s%s%s", KRED, V_BAD_SIGN, KNRM))
 		return (g_v[3]);
 	if ((len <= 0 || len > V_MAX_LEN)
-		&& ft_dprintf(2, "%s%s%s", KRED, V_BAD_LEN, KNRM))
+		&& ft_dprintf(2, "%s%s%s", KRED, V_LEN_ERR, KNRM))
 		return (g_v[3]);
 	v = g_v[0];
 	v.sign = sign;
 	i = -1;
 	while (++i < len)
 		v.x[i] = src[i];
-	v_len(&v);
+	v_len(&v, len);
 	is_g_v(0, &v);
 	return (v);
 }
 
-void			v_sort(t_varint *a, t_varint *b, bool check)
+/*
+**	v_sort:
+**
+**	if sign == NULL
+**		put bigger in a and lower in b (with regard on their signs)
+**	else 
+**		put bigger absolute in a and lower absolute in b
+**		save the sign of the bigger absolute in sign[0] (respectively sign[1] for the lower absolute)
+**		and finally turn a->sign and b->sign to one
+**
+*/
+
+
+void			v_sort(t_varint *a, t_varint *b, int8_t *sign, bool check)
 {
 	t_varint	tmp;
+	int8_t	tmp_sign;
 
 	if (check && !v_check(a, b, NULL, "sort"))
 		return ;
+	if (sign)
+	{
+		sign[0] = a->sign;
+		sign[1] = b->sign;
+		a->sign = 1;
+		b->sign = 1;
+	}	
 	if (v_cmp(a, "-lt", b, false))
 	{
 		tmp = *a;
 		*a = *b;
 		*b = tmp;
+		if (sign)
+		{
+			tmp_sign = sign[0];
+			sign[0] = sign[1];
+			sign[1] = tmp_sign;
+		}
 	}
 }
 

@@ -12,38 +12,91 @@
 
 #include "libft.h"
 
-static void				v_feed(t_varint *dst, t_varint *src, int64_t *cursor)
+static t_varint	*v_left_shift(t_varint *v)
 {
-	uint64_t	q;
-	uint64_t	r;
+	uint64_t		*u64;
+	int16_t		len;
+	int16_t		i;
+	uint64_t		carry[2];
 
-	q = *cursor / V_BIT_LEN;
-	r = *cursor % V_BIT_LEN;
-	*dst = v_mul(*dst, g_v[2], false);
-	dst->x[0] |= ((uint64_t)src->x[q] >> r) & 1;
-	src->x[q] &= ~((uint64_t)1 << r);
-	(*cursor)--;
+	u64 = (uint64_t *)v->x;
+	len = v->len / (ssize_t)sizeof(uint64_t);
+	len += (v->len % (ssize_t)sizeof(uint64_t)) ? 1 : 0;
+	carry[0] = 0;
+	i = -1;
+	while (++i < len)
+	{
+		carry[1] = (*u64 >> 63) & 1;
+		*u64 <<= 1;
+		*u64 |= carry[0];
+		carry[0] = carry[1];
+		u64++;
+	}
+	if (carry[0])
+		*u64 |= carry[0];
+	v_len(v, len * 8 + carry[0]);
+	return (v);
+}
+
+/*
+** SHIFT and SUBSTRACT algorithm
+**
+** here dst is the remainder (r buffer in shift_substract scop)  
+** that we feed with the upper bit of src (dividend) at every starting loop.
+**	we then apply left_shift to quotient
+** if r >= divisor
+**		we substract divisor to r,
+**		and turn the quotient LSB (Low Significant Bit) to one
+**
+** cursor represent where we are in the lecture of dividend
+**
+** optimization : before first loop, as left shifting 0 is doing nothing,
+**						we feed r with first 64 chuncks of dividend
+*/
+
+static void				v_feed(t_varint *dst, t_varint *src, int16_t *cursor, int16_t init)
+{
+	int16_t	q;
+	int16_t	r;
+
+	if (init)
+	{
+		q = init / 8; /* feed q src byte chunks in dest
+		** WARNING when updating cursor : last src|dend chunck isn't full for sure
+		** 7/8 chance it's not (full only if v_msb_id(src) % 8 == 7)
+		*/
+		ft_memcpy(dst->x, src->x + src->len - q, q);
+		v_len(dst, V_MAX_LEN);
+		(*cursor) -= v_msb_id(dst) + 1;
+	}
+	else
+	{
+		q = *cursor / V_BIT_LEN;
+		r = *cursor % V_BIT_LEN;
+		v_left_shift(dst);
+		dst->x[0] |= (src->x[q] >> r) & 1;
+		(*cursor)--;
+	}
 }
 
 static t_varint			v_shift_substract(t_varint dend, char *op, t_varint sor)
 {
-	int64_t			cursor;
+	int16_t			cursor;
 	t_varint		q;
 	t_varint		r;
 
-	if ((cursor = v_maxbin_pow(&dend)) == -1)
+	if ((cursor = v_msb_id(&dend)) == -1)
 		return (g_v[0]);
 	q = g_v[0];
 	r = g_v[0];
+	v_feed(&r, &dend, &cursor, v_msb_id(&sor));
 	while (cursor != -1)
 	{
-		v_feed(&r, &dend, &cursor);
-		if (v_cmp(&r, "-lt", &sor, false))
-			q = v_mul(q, g_v[2], false);
-		else
+		v_feed(&r, &dend, &cursor, 0);
+		v_left_shift(&q);
+		if (v_cmp(&r, "-ge", &sor, false))
 		{
 			r = v_sub(r, sor, false);
-			q = v_mul(q, g_v[2], false);
 			q.x[0] |= 1;
 		}
 		if (cursor == -1 && !ft_strcmp(op, "mod"))
@@ -68,7 +121,7 @@ t_varint				v_div(t_varint dend, t_varint sor, bool check)
 }
 
 /*
-** 	1]
+** 1]
 **	pos == false -> behave like % operator
 **		ex: -12 % 5 will return -2
 **	2]

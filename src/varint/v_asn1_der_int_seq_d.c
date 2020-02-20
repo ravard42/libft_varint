@@ -94,7 +94,7 @@ static t_varint			v_load(uint8_t *src, int len)
 	i = len;
 	while (--i >= 0)
 		ret.x[i] = src[len - 1 - i];
-	v_len(&ret);
+	v_len(&ret, len);
 	return (ret);
 }
 

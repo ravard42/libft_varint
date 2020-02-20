@@ -24,7 +24,8 @@
 */
 
 # define V_ERR				"g_v_r has been called\n"
-# define V_BAD_LEN 			"v.len <= 0 or v.len > MAX_LEN\n"
+# define V_MAX_LEN_ERR	"V_MAX_LEN must be a multiple of 8 and <= 4096\n"
+# define V_LEN_ERR 			"v.len <= 0 or v.len > MAX_LEN\n"
 # define V_COR_LEN 			"corrupted varint : len and data doesn't match\n"
 # define V_BAD_SIGN 		"sign must be -1 or 1\n"
 # define V_NEG_POW 			"neg pow not handle\n"
@@ -42,24 +43,25 @@
 # define V_DER_OVFL 			"can't store asn1_der number, increase V_MAX_LEN\n"
 
 /*
-**
+** END ERR MSGS (to be improved)
 */
 
-#  define V_MID_INF			0xf
-#  define V_SUP				0xff
-#  define V_BIT_LEN			8
-
-# define V_MAX_LEN			512
 
 /*
-**	overflow protection note:
-**	1] when computing operations on varint numbers,
-**		particularly multiplications,
-**		we need at most twice of operand sup len
-**		exemple: mul on 2 varint of len 16 needs 32 chunks
-**	2] v.len must not overflow with V_MAX_LEN
-**		(beware that v.len is signed so V_MAX_LEN <= 0x7fff)
+**	V_MAX_LEN is the number maximum of 8-bit chunks 
+**	available for t_varint struct (defined at compilation time)
+*s
 */
+
+# define V_BIT_LEN			8
+# define V_MAX_LEN		 512
+
+/*
+** must be a mutliple of 8 and <= 4096 (32768 bits)
+** NB: as we need to twice the memory space to compute operations on varint in genrsa process
+**     it means we have an rsa key-size (modulus) treshold set to 16384 bits
+*/
+
 
 typedef struct				s_varint
 {
@@ -69,13 +71,16 @@ typedef struct				s_varint
 }							t_varint;
 
 /*
-**	DER decoding linkedList
-**
-**  id: 	integer id (first 0 and -1 for sequence conteneur)
-**	st_h: 	starting der_header ptr
-**	st_h: 	starting der_value  ptr
-** 	len:	len of the der_value in byte
+**	overflow protection note:
+**	1] when computing operations on varint numbers,
+**		particularly multiplications,
+**		we need at most to twice operand sup len
+**		exemple: mul on 2 varint of len 16 needs 32 chunks
+**	2] with V_MAX_LEN <= 4096
+**		int16_t v.len can contain all possible byte len
+**		and their associated Most Significant Bit ID (cf v_msb_id)
 */
+
 
 typedef struct				s_der_d
 {
@@ -86,8 +91,25 @@ typedef struct				s_der_d
 	struct s_der_d			*nxt;
 }							t_der_d;
 
+/*
+**	DER decoding linkedList
+**
+**  id: 	integer id (first 0 and -1 for sequence conteneur)
+**	st_h: 	starting der_header ptr
+**	st_h: 	starting der_value  ptr
+** 	len:	len of the der_value in byte
+*/
+
 typedef struct s_read		t_read;
 typedef bool				(*t_op_check)(t_varint *[3]);
+
+
+static const t_varint					g_v[4] = {
+	{1, 1, {0}},
+	{1, 1, {1}},
+	{1, 1, {2}},
+	{0, 1, {0}}
+};
 
 /*
 **		g_v array regroups often used varint values
@@ -99,21 +121,14 @@ typedef bool				(*t_op_check)(t_varint *[3]);
 **		  3		 err (sign != -1 && sign != 1)
 */
 
-static const t_varint					g_v[4] = {
-	{1, 1, {0}},
-	{1, 1, {1}},
-	{1, 1, {2}},
-	{0, 1, {0}}
-};
-
 bool						is_g_v(int8_t i, t_varint *v);
-void						v_len(t_varint *v);
+void						v_len(t_varint *v, int16_t start_chunk);
 t_varint					v_init(char sign, uint8_t *src, int16_t len);
 void						v_print(char *name, t_varint *v);
-int64_t						v_maxbin_pow(t_varint *v);
+int16_t						v_msb_id(t_varint *v);
 t_varint					v_abs(t_varint v);
-t_varint					*v_inc(t_varint *a);
-t_varint					*v_dec(t_varint *a);
+t_varint					*v_inc(t_varint *a, bool check);
+t_varint					*v_dec(t_varint *a, bool check);
 t_varint					v_rand(int16_t len, bool neg);
 
 bool						v_check(t_varint *a, t_varint *b, t_varint *m,
@@ -126,8 +141,7 @@ bool						v_expmod_check(t_varint *v[3]);
 
 bool						v_cmp(t_varint *a, char *cmp, t_varint *b,
 		bool check);
-void						v_sort(t_varint *a, t_varint *b, bool check);
-int8_t						add_carry(uint8_t a, uint8_t b, int8_t c);
+void						v_sort(t_varint *a, t_varint *b, int8_t *sign, bool check);
 t_varint					v_add(t_varint a, t_varint b, bool check);
 t_varint					v_sub(t_varint a, t_varint b, bool check);
 t_varint					v_mul(t_varint a, t_varint b, bool check);

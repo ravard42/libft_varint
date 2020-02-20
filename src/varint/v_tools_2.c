@@ -12,9 +12,18 @@
 
 #include "libft.h"
 
-int64_t					v_maxbin_pow(t_varint *v)
+/*
+** we recall that V_MAX_LEN <= 4096 bytes = 32768 bits
+** v_msb_id can return a maximum of 32767  (int16_t)
+** but it stay valid as it represents the index of the MSB (Most Significant Bit)
+** and not the number of bits 
+**
+** v_msb_id need valid varint len!
+*/
+
+int16_t					v_msb_id(t_varint *v)
 {
-	int64_t	j;
+	int16_t	j;
 
 	if (is_g_v(0, v))
 		return (-1);
@@ -28,15 +37,15 @@ int64_t					v_maxbin_pow(t_varint *v)
 	return (j);
 }
 
-t_varint				*v_inc(t_varint *a)
+t_varint				*v_inc(t_varint *a, bool check)
 {
-	*a = v_add(*a, g_v[1], true);
+	*a = v_add(*a, g_v[1], check);
 	return (a);
 }
 
-t_varint				*v_dec(t_varint *a)
+t_varint				*v_dec(t_varint *a, bool check)
 {
-	*a = v_sub(*a, g_v[1], true);
+	*a = v_sub(*a, g_v[1], check);
 	return (a);
 }
 

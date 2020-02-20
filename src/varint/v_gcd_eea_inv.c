@@ -30,7 +30,7 @@ t_varint		v_gcd(t_varint a, t_varint b)
 		a.sign = 1;
 		b.sign = 1;
 	}
-	v_sort(&a, &b, false);
+	v_sort(&a, &b, NULL, false);
 	r[0] = a;
 	r[1] = b;
 	while (!is_g_v(0, r + 1))
@@ -52,7 +52,7 @@ static void		verif_and_sort(t_varint *coef_r0, t_varint *coef_r1,
 		a->sign = 1;
 		b->sign = 1;
 	}
-	v_sort(a, b, false);
+	v_sort(a, b, NULL, false);
 	coef_r0[0] = g_v[1];
 	coef_r0[1] = g_v[0];
 	coef_r1[0] = g_v[0];

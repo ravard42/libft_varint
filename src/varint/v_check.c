@@ -16,11 +16,14 @@ static bool				v_len_check(t_varint *v)
 {
 	int16_t		tmp;
 
+	if ((V_MAX_LEN % 8 != 0 || V_MAX_LEN > 4096)
+		&& ft_dprintf(2, "%s%s%s", KRED, V_MAX_LEN_ERR, KNRM))
+		exit(0);
 	if ((v->len <= 0 || v->len > V_MAX_LEN)
-		&& ft_dprintf(2, "%s%s%s", KRED, V_BAD_LEN, KNRM))
+		&& ft_dprintf(2, "%s%s%s", KRED, V_LEN_ERR, KNRM))
 		return (false);
 	tmp = v->len;
-	v_len(v);
+	v_len(v, V_MAX_LEN);
 	if (v->len != tmp && ft_dprintf(2, "%s%s%s\n", KRED, V_COR_LEN, KNRM))
 		return (false);
 	return (true);
@@ -51,7 +54,8 @@ static t_op_check	op_check[] = {v_add_check, v_mul_check,
 
 bool					v_check(t_varint *a, t_varint *b, t_varint *m, char *op)
 {
-	static t_varint		*v_tab[3] = {NULL, NULL, NULL};
+	// pas de static ici sinon ça tourne mal (si on appel un v_print dans un v_check qui rappel un autre v_check par example)
+	t_varint		*v_tab[3] = {NULL, NULL, NULL};
 	int					i;
 
 	v_tab[0] = a;

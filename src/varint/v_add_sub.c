@@ -12,95 +12,93 @@
 
 #include "libft.h"
 
-int8_t				add_carry(uint8_t a, uint8_t b, int8_t c)
+t_varint		v_add_pos(t_varint a, t_varint b)
 {
-	int8_t			d;
-
-	d = ((a & 1) + (b & 1) + (c & 1)) >> 1 & 1;
-	return ((d + (a >> 1) + (b >> 1)) >> (V_BIT_LEN - 1));
-}
-
-/*
-** a >= 0 et b >= 0
-*/
-
-static t_varint		v_add_pos(t_varint a, t_varint b)
-{
-	t_varint		ret;
+	uint64_t		*u64[2];
 	int16_t		len;
-	int8_t			carr;
 	int16_t		i;
-
-	ret = g_v[0];
-	len = (a.len >= b.len) ? a.len : b.len;
-	carr = 0;
+	uint64_t		tmp;
+	uint8_t		carry;
+	
+	u64[0] = (uint64_t *)a.x;
+	u64[1] = (uint64_t *)b.x;
+	len = a.len / (ssize_t)sizeof(uint64_t);
+	len += (a.len % (ssize_t)sizeof(uint64_t)) ? 1 : 0;
+	carry = 0;
 	i = -1;
 	while (++i < len)
 	{
-		ret.x[i] = a.x[i] + b.x[i] + carr;
-		carr = add_carry(a.x[i], b.x[i], carr);
+		tmp = *u64[0];
+		*u64[0] += *u64[1] + carry;
+		carry = (tmp > *u64[0]) ? 1 : 0;
+		u64[0]++;
+		u64[1]++;
 	}
-	if (carr)
-	{
-		ret.len = i + 1;
-		ret.x[i] = carr;
-	}
-	else
-		ret.len = i;
-	return (ret);
+	*u64[0] += carry;
+	v_len(&a, 8 * len + carry);
+	return (a);
 }
 
 /*
-** a >= b >= 0
+** a >= b >= 0 (cf v_sort in v_add)
 */
 
-static t_varint		v_sub_pos(t_varint a, t_varint b)
+t_varint				v_sub_pos(t_varint a, t_varint b)
 {
-	t_varint		ret;
+	uint64_t		*u64[2];
 	int16_t		len;
 	int16_t		i;
-	uint8_t			c;
+	uint8_t		carry[2];
 
-	ret = g_v[0];
-	len = a.len;
-	c = 0;
+	u64[0] = (uint64_t *)a.x;
+	u64[1] = (uint64_t *)b.x;
+	len = a.len / (ssize_t)sizeof(uint64_t);
+	len += (a.len % (ssize_t)sizeof(uint64_t)) ? 1 : 0;
+	carry[0] = 0;
 	i = -1;
 	while (++i < len)
 	{
-		ret.x[i] = a.x[i] - (b.x[i] + c);
-		c = (a.x[i] >= b.x[i] + c) ? 0 : 1;
+		carry[1] = (*u64[0] >= *u64[1] + carry[0]) ? 0 : 1;
+		*u64[0] -= *u64[1] + carry[0];
+		carry[0] = carry[1];
+		u64[0]++;
+		u64[1]++;
 	}
-	v_len(&ret);
-	return (ret);
+	v_len(&a, len * 8);
+	return (a);
 }
+
+/*
+** note that v_sort here is in absolute mode (cf v_tools.c)
+*/
 
 t_varint			v_add(t_varint a, t_varint b, bool check)
 {
-	t_varint		ret;
-	bool			tmp;
-	t_varint		abs[2];
+	int8_t		sign[2];
 
 	if (check && !v_check(&a, &b, NULL, "add"))
 		return (g_v[3]);
-	abs[0] = v_abs(a);
-	abs[1] = v_abs(b);
-	if (a.sign == b.sign)
-	{
-		ret = v_add_pos(abs[0], abs[1]);
-		ret.sign = a.sign;
-	}
+	v_sort(&a, &b, sign, false);
+	if (sign[0] == sign[1])
+		a = v_add_pos(a, b);
 	else
-	{
-		tmp = v_cmp(abs, "-ge", abs + 1, false);
-		ret = tmp ? v_sub_pos(abs[0], abs[1])
-			: v_sub_pos(abs[1], abs[0]);
-		ret.sign = tmp ? a.sign : b.sign;
-	}
-	return (ret);
+		a = v_sub_pos(a, b);
+	a.sign = sign[0];
+	return (a);
 }
 
 t_varint			v_sub(t_varint a, t_varint b, bool check)
 {
+	int8_t		sign[2];
+
 	b.sign *= -1;
-	return (v_add(a, b, check));
+	if (check && !v_check(&a, &b, NULL, "add"))
+		return (g_v[3]);
+	v_sort(&a, &b, sign, false);
+	if (sign[0] == sign[1])
+		a = v_add_pos(a, b);
+	else
+		a = v_sub_pos(a, b);
+	a.sign = sign[0];
+	return (a);
 }
