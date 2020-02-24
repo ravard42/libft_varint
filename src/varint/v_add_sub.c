@@ -12,6 +12,39 @@
 
 #include "libft.h"
 
+/*
+** binary decomposition
+** a = 1 * 2^n +  a_n-1 * 2^(n - 1) + ... + 2^0 * a_0
+** b = 1 * 2^m +  b_m-1 * 2^(m - 1) + ... + 2^0 * b_0
+**
+** msb_id(a) = (a != 0) ? n : -1
+** msb_id(b) = (b != 0) ? m : -1
+*/
+
+/*
+** V_ADD|V_SUB OVFL
+**
+** a.sign == b.sign
+** msb_id(a + b) <= sup(n, m) + 1
+**
+** a.sign != b.sign
+** msb_id(a + b) <= sup(n, m)
+*/
+
+bool			v_add_check(t_varint *v[3])
+{
+	int64_t	msb[3];
+
+	msb[0] = v_msb_id(v[0]);
+	msb[1] = v_msb_id(v[1]);
+	msb[2] = (msb[0] >= msb[1]) ? msb[0] : msb[1];
+	msb[2] += v[0]->sign == v[1]->sign ? 1 : 0;
+	if (1 + msb[2] / V_BIT_LEN > V_MAX_LEN
+		&& ft_dprintf(2, "%s%s%s", KRED, V_ADD_OVFL, KNRM))
+		return (false);
+	return (true);
+}
+
 t_varint		v_add_pos(t_varint a, t_varint b)
 {
 	uint64_t		*u64[2];

@@ -51,8 +51,8 @@ SRC =	src/ft_memalloc.c\
 		src/varint/v_tools.c\
 		src/varint/v_tools_2.c\
 		src/varint/v_check.c\
-		src/varint/v_op_check.c\
 		src/varint/v_cmp.c\
+		src/varint/v_shift.c\
 		src/varint/v_add_sub.c\
 		src/varint/v_mul_exp.c\
 		src/varint/v_div_mod.c\

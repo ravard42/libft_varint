@@ -24,13 +24,14 @@
 */
 
 # define V_ERR				"g_v_r has been called\n"
-# define V_MAX_LEN_ERR	"V_MAX_LEN must be a multiple of 8 and <= 4096\n"
+# define V_MAX_LEN_ERR	"V_MAX_LEN must be a multiple of 8 and <= 4096\nexit ...\n"
 # define V_LEN_ERR 			"v.len <= 0 or v.len > MAX_LEN\n"
 # define V_COR_LEN 			"corrupted varint : len and data doesn't match\n"
 # define V_BAD_SIGN 		"sign must be -1 or 1\n"
 # define V_NEG_POW 			"neg pow not handle\n"
 # define V_BAD_SUB 			"a < b in v_pos_sub\n"
-# define V_ADD_OVFL			"overflow in v_add or v_sub, increase V_MAX_LEN\n"
+# define V_LSHIFT_OVFL			"overflow in v_left_shift increase V_MAX_LEN\n"
+# define V_ADD_OVFL			"overflow in v_add|v_sub increase V_MAX_LEN\n"
 # define V_MUL_OVFL			"overflow in v_mul, increase V_MAX_LEN\n"
 # define V_EXP_OVFL			"overflow in v_exp, increase V_MAX_LEN\n"
 # define V_EXP_LIM			"expo lim value overtaken in v_exp\n"
@@ -52,7 +53,7 @@
 */
 
 # define V_BIT_LEN			8
-# define V_MAX_LEN		 	512
+# define V_MAX_LEN		 	8
 
 /*
 ** must be a mutliple of 8 and <= 4096 (32768 bits)
@@ -128,6 +129,7 @@ t_varint					v_rand(int16_t len, bool neg);
 
 bool						v_check(t_varint *a, t_varint *b, t_varint *m,
 		char *op);
+bool						v_lshift_check(t_varint *v[3]);
 bool						v_add_check(t_varint *v[3]);
 bool						v_mul_check(t_varint *v[3]);
 bool						v_exp_check(t_varint *v[3]);
@@ -137,6 +139,8 @@ bool						v_expmod_check(t_varint *v[3]);
 bool						v_cmp(t_varint *a, char *cmp, t_varint *b,
 		bool check);
 void						v_sort(t_varint *a, t_varint *b, int8_t *sign, bool check);
+t_varint					v_left_shift(t_varint v, bool check);
+t_varint					v_right_shift(t_varint v, bool check);
 t_varint					v_add(t_varint a, t_varint b, bool check);
 t_varint					v_sub(t_varint a, t_varint b, bool check);
 t_varint					v_mul(t_varint a, t_varint b, bool check);

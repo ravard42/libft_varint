@@ -12,6 +12,38 @@
 
 #include "libft.h"
 
+/*
+** V_EXPMOD OVFL NOTE
+**
+** a^b mod(n) = (a mod(n))^b mod(n)
+**
+** expmod reduce 'a' to 'a mod(n)' from the entry of the function
+**	so for overflow checking we only need to check that n * n don't overflow (see V_MUL OVFL NOTE)
+**
+**
+** a = v[0]
+** b = v[1]
+** n = v[2]
+*/
+
+bool			v_expmod_check(t_varint *v[3])
+{
+	int64_t	msb[2];
+
+	if (v[1]->sign == -1
+		&& ft_dprintf(2, "%s%s%s", KRED, V_NEG_POW, KNRM))
+		return (false);
+	if (is_g_v(0, v[2])
+		&& ft_dprintf(2, "%s%s%s", KRED, V_DIV_BY_0, KNRM))
+		return (false);
+	msb[0] = v_msb_id(v[2]);
+	msb[1] = msb[0] * 2;
+	if (1 + msb[1] / V_BIT_LEN > V_MAX_LEN
+		&& ft_dprintf(2, "%s%s%s", KRED, V_EXPMOD_OVFL, KNRM))
+		return (false);
+	return (true);
+}
+
 static void	sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod)
 {
 	if (v == NULL)

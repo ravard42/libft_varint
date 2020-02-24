@@ -12,30 +12,20 @@
 
 #include "libft.h"
 
-static t_varint	*v_left_shift(t_varint *v)
-{
-	uint64_t		*u64;
-	int16_t		len;
-	int16_t		i;
-	uint64_t		carry[2];
+/* 
+** v[0] -> dividend
+** v[1] -> divisor
+**
+**	can't overflow in div or mod
+**	endeed quotient and modulus are always <= dividend
+*/
 
-	u64 = (uint64_t *)v->x;
-	len = v->len / (ssize_t)sizeof(uint64_t);
-	len += (v->len % (ssize_t)sizeof(uint64_t)) ? 1 : 0;
-	carry[0] = 0;
-	i = -1;
-	while (++i < len)
-	{
-		carry[1] = (*u64 >> 63) & 1;
-		*u64 <<= 1;
-		*u64 |= carry[0];
-		carry[0] = carry[1];
-		u64++;
-	}
-	if (carry[0])
-		*u64 |= carry[0];
-	v_len(v, len * 8 + carry[0]);
-	return (v);
+bool			v_div_check(t_varint *v[3])
+{
+	if (is_g_v(0, v[1])
+		&& ft_dprintf(2, "%s%s%s", KRED, V_DIV_BY_0, KNRM))
+		return (false);
+	return (true);
 }
 
 /*
@@ -71,7 +61,7 @@ static void				v_feed(t_varint *dst, t_varint *src, int16_t *cursor, int16_t *in
 	{
 		q = *cursor / V_BIT_LEN;
 		r = *cursor % V_BIT_LEN;
-		v_left_shift(dst);
+		*dst = v_left_shift(*dst, false);
 		dst->x[0] |= (src->x[q] >> r) & 1;
 		(*cursor)--;
 	}
@@ -93,7 +83,7 @@ static t_varint			v_shift_substract(t_varint dend, char *op, t_varint sor)
 	while (cursor != -1)
 	{
 		v_feed(&r, &dend, &cursor, &init_r);
-		v_left_shift(&q);
+		q = v_left_shift(q, false);
 		if (v_cmp(&r, "-ge", &sor, false))
 		{
 			r = v_sub(r, sor, false);
