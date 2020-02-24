@@ -54,20 +54,18 @@ static t_varint	*v_left_shift(t_varint *v)
 **						we feed r with first 64 chuncks of dividend
 */
 
-static void				v_feed(t_varint *dst, t_varint *src, int16_t *cursor, int16_t init)
+static void				v_feed(t_varint *dst, t_varint *src, int16_t *cursor, int16_t *init_r)
 {
 	int16_t	q;
 	int16_t	r;
 
-	if (init)
+	if (*init_r)
 	{
-		q = init / 8; /* feed q src byte chunks in dest
-		** WARNING when updating cursor : last src|dend chunck isn't full for sure
-		** 7/8 chance it's not (full only if v_msb_id(src) % 8 == 7)
-		*/
+		q = *init_r / V_BIT_LEN;
 		ft_memcpy(dst->x, src->x + src->len - q, q);
-		v_len(dst, V_MAX_LEN);
+		v_len(dst, q + 1);
 		(*cursor) -= v_msb_id(dst) + 1;
+		*init_r = 0;
 	}
 	else
 	{
@@ -77,6 +75,7 @@ static void				v_feed(t_varint *dst, t_varint *src, int16_t *cursor, int16_t ini
 		dst->x[0] |= (src->x[q] >> r) & 1;
 		(*cursor)--;
 	}
+	
 }
 
 static t_varint			v_shift_substract(t_varint dend, char *op, t_varint sor)
@@ -84,15 +83,16 @@ static t_varint			v_shift_substract(t_varint dend, char *op, t_varint sor)
 	int16_t			cursor;
 	t_varint		q;
 	t_varint		r;
+	int16_t		init_r;
 
 	if ((cursor = v_msb_id(&dend)) == -1)
 		return (g_v[0]);
 	q = g_v[0];
 	r = g_v[0];
-	v_feed(&r, &dend, &cursor, v_msb_id(&sor));
+	init_r = v_cmp(&dend, "-le", &sor, false) ? v_msb_id(&dend) : v_msb_id(&sor);
 	while (cursor != -1)
 	{
-		v_feed(&r, &dend, &cursor, 0);
+		v_feed(&r, &dend, &cursor, &init_r);
 		v_left_shift(&q);
 		if (v_cmp(&r, "-ge", &sor, false))
 		{

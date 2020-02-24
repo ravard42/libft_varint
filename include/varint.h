@@ -46,22 +46,17 @@
 ** END ERR MSGS (to be improved)
 */
 
-
 /*
 **	V_MAX_LEN is the number maximum of 8-bit chunks 
-**	available for t_varint struct (defined at compilation time)
-*s
+**	available for t_varint struct
 */
 
 # define V_BIT_LEN			8
-# define V_MAX_LEN		 512
+# define V_MAX_LEN		 	512
 
 /*
 ** must be a mutliple of 8 and <= 4096 (32768 bits)
-** NB: as we need to twice the memory space to compute operations on varint in genrsa process
-**     it means we have an rsa key-size (modulus) treshold set to 16384 bits
 */
-
 
 typedef struct				s_varint
 {

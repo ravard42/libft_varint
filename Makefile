@@ -1,7 +1,8 @@
 CC = gcc
 #FLAGS = -Wall -Wextra -Werror
-FLAGS = -Wall -Wextra -O2
-#FLAGS = -Wall -Wextra -fsanitize=address -g
+#FLAGS = -Wall -Wextra -O2
+FLAGS = -Wall -Wextra -fsanitize=address -g
+#FLAGS = -Wall -Wextra -g
 
 NAME = libft.a
 SRC =	src/ft_memalloc.c\

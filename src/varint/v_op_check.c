@@ -126,7 +126,7 @@ bool			v_div_check(t_varint *v[3])
 **
 ** a^b mod(n) = (a mod(n))^b mod(n)
 **
-** expmod reduce a to a mod(n) from the entry of the function
+** expmod reduce 'a' to 'a mod(n)' from the entry of the function
 **	so for overflow checking we only need to check that n * n don't overflow
 */
 
