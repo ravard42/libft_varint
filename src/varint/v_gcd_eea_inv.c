@@ -12,6 +12,21 @@
 
 #include "libft.h"
 
+
+/*
+** V_GCD_EEA_INV OVFL NOT
+**
+** for GCD it seems good
+**
+** for EEA and INV
+** To be done ...
+**	Indeed with all the modifications made in varint Dir I have some new ovfl issues 
+** >sh varint_test.sh u64_cmp eea 8 1
+** with V_MAX_LEN = 8 (it 's not ok anymore)
+*/
+
+
+
 /*
 ** v_gcd et v_eea sont ramené à des nombres positifs par soucis de commodité
 */

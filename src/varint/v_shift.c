@@ -1,4 +1,9 @@
 #include "libft.h"
+/*
+** V_LEFT_SHIFT|V_RIGHT_SHIFT OVFL NOTE
+**
+** can't overflow in v_right_shift, and need one extra bit in v_left_shift
+*/
 
 bool			v_lshift_check(t_varint *v[3])
 {

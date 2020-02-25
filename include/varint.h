@@ -53,7 +53,7 @@
 */
 
 # define V_BIT_LEN			8
-# define V_MAX_LEN		 	8
+# define V_MAX_LEN		 	512
 
 /*
 ** must be a mutliple of 8 and <= 4096 (32768 bits)

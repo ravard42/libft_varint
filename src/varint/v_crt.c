@@ -13,6 +13,13 @@
 #include "libft.h"
 
 /*
+** V_CRT OVLF NOTE
+**
+** to be done
+*/
+
+
+/*
 ** about crt[8]
 **
 **	index 		data

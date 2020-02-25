@@ -22,7 +22,7 @@
 */
 
 /*
-**	V_MUL OVFL
+**	V_MUL OVFL NOTE
 **
 ** msb_id(a * b) <= n + m
 */
@@ -88,7 +88,7 @@ t_varint			v_mul(t_varint a, t_varint b, bool check)
 }
 
 /*
-**	V_EXP OVFL
+**	V_EXP OVFL NOTE
 **
 **  v[0] -> v
 **  v[1] -> e

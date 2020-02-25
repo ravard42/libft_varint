@@ -22,7 +22,7 @@
 */
 
 /*
-** V_ADD|V_SUB OVFL
+** V_ADD|V_SUB OVFL NOTE
 **
 ** a.sign == b.sign
 ** msb_id(a + b) <= sup(n, m) + 1

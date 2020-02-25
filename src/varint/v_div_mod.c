@@ -13,6 +13,8 @@
 #include "libft.h"
 
 /* 
+** V_DIV|V_MOD OVFL NOTE
+**
 ** v[0] -> dividend
 ** v[1] -> divisor
 **
