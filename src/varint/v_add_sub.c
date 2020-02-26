@@ -33,7 +33,7 @@
 
 bool			v_add_check(t_varint *v[3])
 {
-	int64_t	msb[3];
+	int16_t	msb[3];
 
 	msb[0] = v_msb_id(v[0]);
 	msb[1] = v_msb_id(v[1]);
@@ -111,7 +111,7 @@ t_varint			v_add(t_varint a, t_varint b, bool check)
 
 	if (check && !v_check(&a, &b, NULL, "add"))
 		return (g_v[3]);
-	v_sort(&a, &b, sign, false);
+	v_sort(&a, &b, sign);
 	if (sign[0] == sign[1])
 		a = v_add_pos(a, b);
 	else
@@ -127,7 +127,7 @@ t_varint			v_sub(t_varint a, t_varint b, bool check)
 	b.sign *= -1;
 	if (check && !v_check(&a, &b, NULL, "add"))
 		return (g_v[3]);
-	v_sort(&a, &b, sign, false);
+	v_sort(&a, &b, sign);
 	if (sign[0] == sign[1])
 		a = v_add_pos(a, b);
 	else

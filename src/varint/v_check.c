@@ -48,9 +48,9 @@ static bool				v_len_check(t_varint *v)
 */
 
 static const char	*op_name[] = {"left_shift", "add", "mul", "exp",
-	"div", "expmod", NULL};
+	"div", "expmod", "eea", NULL};
 static t_op_check	op_check[] = {v_lshift_check, v_add_check, v_mul_check,
-	v_exp_check, v_div_check, v_expmod_check};
+	v_exp_check, v_div_check, v_expmod_check, v_eea_check};
 
 bool					v_check(t_varint *a, t_varint *b, t_varint *m, char *op)
 {

@@ -29,7 +29,7 @@
 
 bool			v_mul_check(t_varint *v[3])
 {
-	int64_t	msb[3];
+	int16_t	msb[3];
 
 	msb[0] = v_msb_id(v[0]);
 	msb[1] = v_msb_id(v[1]);

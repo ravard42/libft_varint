@@ -14,38 +14,22 @@
 
 
 /*
-** V_GCD_EEA_INV OVFL NOT
+** V_GCD OVFL NOT
 **
-** for GCD it seems good
+** just one v_mod in there so GCD isn't concerned by ovfl
 **
-** for EEA and INV
-** To be done ...
-**	Indeed with all the modifications made in varint Dir I have some new ovfl issues 
-** >sh varint_test.sh u64_cmp eea 8 1
-** with V_MAX_LEN = 8 (it 's not ok anymore)
 */
 
-
-
-/*
-** v_gcd et v_eea sont ramené à des nombres positifs par soucis de commodité
-*/
-
-t_varint		v_gcd(t_varint a, t_varint b)
+t_varint		v_gcd(t_varint a, t_varint b, bool check)
 {
 	t_varint		r[2];
 	t_varint		tmp;
 
-	if (!v_check(&a, &b, NULL, "gcd"))
+	if (check && !v_check(&a, &b, NULL, "gcd"))
 		return (g_v[3]);
-	if (a.sign != 1 || b.sign != 1)
-	{
-		ft_dprintf(2, "%sat least one sign switch to 1 in gcd%s\n",
-				KYEL, KNRM);
-		a.sign = 1;
-		b.sign = 1;
-	}
-	v_sort(&a, &b, NULL, false);
+	a.sign = 1;
+	b.sign = 1;
+	v_sort(&a, &b, NULL);
 	r[0] = a;
 	r[1] = b;
 	while (!is_g_v(0, r + 1))
@@ -57,17 +41,33 @@ t_varint		v_gcd(t_varint a, t_varint b)
 	return (r[0]);
 }
 
-static void		verif_and_sort(t_varint *coef_r0, t_varint *coef_r1,
-		t_varint *a, t_varint *b)
+/*
+** V_EEA OVFL NOTE
+**
+** we know that final resultat (coef_r0, coef_r0 + 1) can be contained in the same varint size that inputs
+** however when processing v_mul algo in eea it could overflow in the way we handle carry (32-bit * 32-bit in 64-bit)
+** (cf v_mul algo -> u64 = (uint64_t *)((uint32_t *)ret->x + i + j);)
+** let alen32, blen32 and maxlen32 that represent the number of uint32_t chunck necessary to contained respectively a b and V_MAX_LEN chuncks 
+**	we want max32 >= alen32 + blen32
+*/
+
+bool			v_eea_check(t_varint *v[3])
 {
-	if (a->sign != 1 || b->sign != 1)
-	{
-		ft_dprintf(2, "%sat least one sign switch to 1 in eea%s\n",
-				KYEL, KNRM);
-		a->sign = 1;
-		b->sign = 1;
-	}
-	v_sort(a, b, NULL, false);
+	int64_t	len32[3];
+
+	len32[0] = v[0]->len / 4;
+	len32[0] += (v[0]->len % 4) ? 1 : 0;
+	len32[1] = v[1]->len / 4;
+	len32[1] += (v[1]->len % 4) ? 1 : 0;
+	len32[2] = V_MAX_LEN / 4;
+	if (len32[0] + len32[1] > len32[2]
+		&& ft_dprintf(2, "%s%s%s", KRED, V_EEA_OVFL, KNRM))
+		return (false);
+	return (true);
+}
+
+static void		init_coef(t_varint *coef_r0, t_varint *coef_r1)
+{
 	coef_r0[0] = g_v[1];
 	coef_r0[1] = g_v[0];
 	coef_r1[0] = g_v[0];
@@ -79,15 +79,17 @@ static void		verif_and_sort(t_varint *coef_r0, t_varint *coef_r1,
 ** coef_r1[2]	: coef alpha et beta de r[1]
 */
 
-void			v_eea(t_varint *coef_r0, t_varint a, t_varint b)
+void			v_eea(t_varint *coef_r0, t_varint a, t_varint b, bool check)
 {
-	t_varint	r[2];
+	int8_t	sign[3];
 	t_varint	coef_r1[2];
+	t_varint	r[2];
 	t_varint	tmp[2];
 
-	if (!v_check(&a, &b, NULL, "eea"))
+	if (check && !v_check(&a, &b, NULL, "eea"))
 		return ;
-	verif_and_sort(coef_r0, coef_r1, &a, &b);
+	sign[2] = v_sort(&a, &b, sign);
+	init_coef(coef_r0, coef_r1);
 	r[0] = a;
 	r[1] = b;
 	while (!is_g_v(0, r + 1))
@@ -103,21 +105,30 @@ void			v_eea(t_varint *coef_r0, t_varint a, t_varint b)
 		coef_r1[0] = tmp[0];
 		coef_r1[1] = tmp[1];
 	}
+	coef_r0[0].sign *= (sign[0] != a.sign) ? -1 : 1;
+	(coef_r0[1]).sign *= (sign[1] != a.sign) ? -1 : 1;
+	if (sign[2])
+	{
+		tmp[0] = coef_r0[0];
+		coef_r0[0] = coef_r0[1];
+		coef_r0[1] = tmp[0];
+	}	
 }
 
-t_varint		v_inv(t_varint v, t_varint mod)
+t_varint		v_inv(t_varint v, t_varint mod, bool check)
 {
 	t_varint	tmp[2];
 	t_varint	gcd;
 
-	if (!v_check(&v, NULL, &mod, "inv"))
+	if (check && !v_check(&v, NULL, &mod, "inv"))
 		return (g_v[3]);
-	gcd = v_gcd(v, mod);
+	gcd = v_gcd(v, mod, false);
 	if (!is_g_v(1, &gcd)
 		&& ft_dprintf(2, "%s%s%s", KRED, V_INV_MOD_ERR, KNRM))
 		return (g_v[3]);
-	v_eea(tmp, v, mod);
-	if (v_cmp(&v, "-gt", &mod, true))
-		return (tmp[0]);
-	return (tmp[1]);
+	v_eea(tmp, v, mod, false);
+//	if (v_cmp(&v, "-gt", &mod, false))
+//		return (tmp[0]);
+//	return (tmp[1]);
+	return (tmp[0]);
 }

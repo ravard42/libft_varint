@@ -84,16 +84,15 @@ t_varint		v_init(char sign, uint8_t *src, int16_t len)
 **		save the sign of the bigger absolute in sign[0] (respectively sign[1] for the lower absolute)
 **		and finally turn a->sign and b->sign to one
 **
+**	return -1 for error, 1 if switch occured, 0 if not
 */
 
 
-void			v_sort(t_varint *a, t_varint *b, int8_t *sign, bool check)
+uint8_t			v_sort(t_varint *a, t_varint *b, int8_t *sign)
 {
 	t_varint	tmp;
 	int8_t	tmp_sign;
 
-	if (check && !v_check(a, b, NULL, "sort"))
-		return ;
 	if (sign)
 	{
 		sign[0] = a->sign;
@@ -112,7 +111,9 @@ void			v_sort(t_varint *a, t_varint *b, int8_t *sign, bool check)
 			sign[0] = sign[1];
 			sign[1] = tmp_sign;
 		}
+		return (1);
 	}
+	return (0);
 }
 
 void			v_print(char *name, t_varint *v)

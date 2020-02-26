@@ -28,7 +28,7 @@
 
 bool			v_expmod_check(t_varint *v[3])
 {
-	int64_t	msb[2];
+	int16_t	msb[2];
 
 	if (v[1]->sign == -1
 		&& ft_dprintf(2, "%s%s%s", KRED, V_NEG_POW, KNRM))
