@@ -36,7 +36,7 @@
 # define V_EXP_OVFL			"overflow in v_exp, increase V_MAX_LEN\n"
 # define V_EXP_LIM			"exponent lim value overtaken in v_exp\n"
 # define V_EXPMOD_OVFL		"overflow in v_expmod, increase V_MAX_LEN\n"
-# define V_EEA_OVFL			"overflow in v_eea, increase V_MAX_LEN\n"
+# define V_EEA_OVFL			"overflow in v_eea (v_inv), increase V_MAX_LEN\n"
 # define V_DIV_BY_0 		"division by 0\n"
 # define V_INV_MOD_ERR 		"elem not inversible for this modulo\n"
 # define V_DER_INT_SEQ_ONLY	"asn1 der alg only handle sequence of integers\n"
@@ -54,7 +54,7 @@
 */
 
 # define V_BIT_LEN			8
-# define V_MAX_LEN		 	16
+# define V_MAX_LEN		 	512
 
 /*
 ** must be a mutliple of 8 and <= 4096 (32768 bits)

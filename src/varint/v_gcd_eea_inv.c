@@ -66,14 +66,6 @@ bool			v_eea_check(t_varint *v[3])
 	return (true);
 }
 
-static void		init_coef(t_varint *coef_r0, t_varint *coef_r1)
-{
-	coef_r0[0] = g_v[1];
-	coef_r0[1] = g_v[0];
-	coef_r1[0] = g_v[0];
-	coef_r1[1] = g_v[1];
-}
-
 static void	process(t_varint *coef_r0, t_varint *coef_r1, t_varint *r)
 {
 	t_varint	tmp[2];
@@ -91,22 +83,26 @@ static void	process(t_varint *coef_r0, t_varint *coef_r1, t_varint *r)
 }
 
 /*
-** r[2]			: deux derniers restes
+** r[2]			: deux derniers restes de l'algo d'Euclide
+** coef_r0[2]	: coef alpha et beta de r[0] (allocated outside)
 ** coef_r1[2]	: coef alpha et beta de r[1]
 */
 
 void			v_eea(t_varint *coef_r0, t_varint a, t_varint b, bool check)
 {
 	int8_t	sign[3];
-	t_varint	coef_r1[2];
 	t_varint	r[2];
+	t_varint	coef_r1[2];
 
 	if (check && !v_check(&a, &b, NULL, "eea"))
 		return ;
 	sign[2] = v_sort(&a, &b, sign);
-	init_coef(coef_r0, coef_r1);
 	r[0] = a;
 	r[1] = b;
+	coef_r0[0] = g_v[1];
+	coef_r0[1] = g_v[0];
+	coef_r1[0] = g_v[0];
+	coef_r1[1] = g_v[1];
 	while (!is_g_v(0, r + 1))
 		process(coef_r0, coef_r1, r);
 	coef_r0[0].sign *= (sign[0] != a.sign) ? -1 : 1;
@@ -117,4 +113,29 @@ void			v_eea(t_varint *coef_r0, t_varint a, t_varint b, bool check)
 		coef_r0[0] = coef_r0[1];
 		coef_r0[1] = r[0];
 	}	
+}
+
+/*
+** V_INV OVFL NOT
+**
+** same as EEA
+**
+*/
+
+t_varint		v_inv(t_varint v, t_varint mod, bool check)
+{
+	t_varint	tmp[2];
+	t_varint	gcd;
+
+	if (check && !v_check(&v, &mod, NULL, "eea"))
+		return (g_v[3]);
+	gcd = v_gcd(v, mod, false);
+	if (!is_g_v(1, &gcd)
+		&& ft_dprintf(2, "%s%s%s", KRED, V_INV_MOD_ERR, KNRM))
+		return (g_v[3]);
+	v_eea(tmp, v, mod, false);
+//	if (v_cmp(&v, "-gt", &mod, false))
+//		return (tmp[0]);
+//	return (tmp[1]);
+	return (tmp[0]);
 }

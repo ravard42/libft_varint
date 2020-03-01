@@ -12,30 +12,11 @@
 
 #include "libft.h"
 
-t_varint		v_inv(t_varint v, t_varint mod, bool check)
-{
-	t_varint	tmp[2];
-	t_varint	gcd;
-
-	if (check && !v_check(&v, NULL, &mod, "inv"))
-		return (g_v[3]);
-	gcd = v_gcd(v, mod, false);
-	if (!is_g_v(1, &gcd)
-		&& ft_dprintf(2, "%s%s%s", KRED, V_INV_MOD_ERR, KNRM))
-		return (g_v[3]);
-	v_eea(tmp, v, mod, false);
-//	if (v_cmp(&v, "-gt", &mod, false))
-//		return (tmp[0]);
-//	return (tmp[1]);
-	return (tmp[0]);
-}
-
 /*
 ** V_CRT OVLF NOTE
 **
 ** to be done
 */
-
 
 /*
 ** about crt[8]
