@@ -98,6 +98,12 @@ static t_varint			v_load(uint8_t *src, int len)
 	return (ret);
 }
 
+/*
+**	try to read an asn1 der integer sequence from t_read,
+**	if data are valid, store the number of varint decoded in *nb_varint,
+**	and return a varint fresh malloc array filled with decoded data.
+*/
+
 t_varint				*v_asn1_der_int_seq_d(int *nb_varint, t_read *r)
 {
 	t_der_d		ori;

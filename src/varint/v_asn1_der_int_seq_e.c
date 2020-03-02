@@ -12,17 +12,13 @@
 
 #include "libft.h"
 
-static int		set_fd(char *out)
-{
-	int	fd;
-
-	if (out == NULL)
-		return (1);
-	if ((fd = open(out, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1
-		&& ft_dprintf(2, "%sopen error in asn1 der encoding%s\n", KRED, KNRM))
-		return (-1);
-	return (fd);
-}
+/*
+**	about h[1 + nb_varint][6]:
+**	index 0 for sequence header, and others for integer headers
+**	h[x][0] = header len
+**	h[x][1:4] = header
+**  h[x][5] = add sign byte (or not) between header and value
+*/
 
 static int8_t	put_header(uint8_t *h, uint8_t type, unsigned int len)
 {
@@ -65,34 +61,33 @@ static int		set_sub_header(uint8_t *h, t_varint v)
 	return (tot_len);
 }
 
-static void		put_value(int fd_out, t_varint *v)
+void				write_data(t_read *r, uint8_t h[][6], t_varint *v, int nb_varint)
 {
-	int16_t		j;
-	uint8_t		buff;
+	int				i;
 
-	j = v->len;
-	while (--j >= 0)
+	ft_memcpy(r->msg, h[0] + 1, h[0][0]);
+	r->len = h[0][0];
+	i = -1;
+	while (++i < nb_varint)
 	{
-		buff = v->x[j]; //>> 8 * k;
-		write(fd_out, &buff, 1);
+		ft_memcpy(r->msg + r->len, h[i + 1] + 1, h[i + 1][0]);
+		r->len += (h[i + 1][5]) ? h[i + 1][0] + 1 : h[i + 1][0];
+		ft_memrcpy(r->msg + r->len, v[i].x, v[i].len);
+		r->len += v[i].len;
 	}
 }
 
 /*
-**	about h[1 + nb_varint][6]:
-**	index 0 for sequence header, and others for integer headers
-**	h[x][0] = header len
-**	h[x][1:4] = header
-**  h[x][5] = add sign byte (or not) between header and value
+** der encode nb_varint from *v and write it in *r
+**	NB: *r must be blank (r->msg not allocated)
 */
 
-int				v_asn1_der_int_seq_e(char *out, t_varint *v, int nb_varint)
+int				v_asn1_der_int_seq_e(t_read *r, t_varint *v, int nb_varint)
 {
 	unsigned int	seq_len;
 	int				i;
 	int				tmp;
 	uint8_t			h[1 + nb_varint][6];
-	static uint8_t	sign_byte = 0x00;
 
 	seq_len = 0;
 	i = -1;
@@ -101,16 +96,9 @@ int				v_asn1_der_int_seq_e(char *out, t_varint *v, int nb_varint)
 		seq_len += tmp;
 	if (tmp == -1 || put_header(h[0], 0x30, seq_len) == -1)
 		return (-1);
-	if ((tmp = set_fd(out)) == -1)
-		return (-1);
-	write(tmp, h[0] + 1, h[0][0]);
-	i = -1;
-	while (++i < nb_varint)
-	{
-		write(tmp, h[i + 1] + 1, h[i + 1][0]);
-		if (h[i + 1][5])
-			write(tmp, &sign_byte, 1);
-		put_value(tmp, v + i);
-	}
-	return (0);
+	if (!(r->msg = (char *)ft_memalloc(sizeof(char) * (h[0][0] + seq_len + 1)))
+		&& ft_dprintf(2, "%smalloc error%s\n", KRED, KNRM))
+		return (-2);
+	write_data(r, h, v, nb_varint);
+	return (1);
 }
