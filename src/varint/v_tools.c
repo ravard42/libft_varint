@@ -123,19 +123,19 @@ void			v_print(char *name, t_varint *v)
 
 	if (!v_check(v, NULL, NULL, "print"))
 		return ;
-	ft_printf("%s|%hhd|%hd:\n", name, v->sign, v->len);
+	ft_dprintf(2, "%s|%hhd|%hd:\n", name, v->sign, v->len);
 	i = v->len - 1;
 	while (i >= 0)
 	{
-		ft_printf("    ");
+		ft_dprintf(2, "    ");
 		j = -1;
 		while (++j < 15 && i - j >= 0)
 		{
-			ft_printf("%02x", v->x[i - j]);
+			ft_dprintf(2, "%02x", v->x[i - j]);
 			if (i - (j + 1) >= 0)
-				ft_printf(":");
+				ft_dprintf(2, ":");
 		}
 		i -= 15;	
-		ft_printf("\n");
+		ft_dprintf(2, "\n");
 	}
 }

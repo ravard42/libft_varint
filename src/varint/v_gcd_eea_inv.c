@@ -134,8 +134,7 @@ t_varint		v_inv(t_varint v, t_varint mod, bool check)
 		&& ft_dprintf(2, "%s%s%s", KRED, V_INV_MOD_ERR, KNRM))
 		return (g_v[3]);
 	v_eea(tmp, v, mod, false);
-//	if (v_cmp(&v, "-gt", &mod, false))
-//		return (tmp[0]);
-//	return (tmp[1]);
+	if (tmp[0].sign == -1)
+		tmp[0] = v_mod(tmp[0], mod, true, false);
 	return (tmp[0]);
 }
