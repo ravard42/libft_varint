@@ -124,8 +124,7 @@ static const t_varint					g_v[4] = {
 bool						is_g_v(int8_t i, t_varint *v);
 void						v_len(t_varint *v, int16_t start_chunk);
 t_varint					v_init(char sign, uint8_t *src, int16_t len);
-void						v_print(int fd, char *name, t_varint *v);
-void						v_hexdump(int fd, t_varint *v);
+void						v_print(int fd, char *name, t_varint *v, bool check);
 int16_t						v_msb_id(t_varint *v);
 t_varint					v_abs(t_varint v);
 t_varint					*v_inc(t_varint *a, bool check);
