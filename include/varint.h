@@ -48,7 +48,7 @@
 */
 
 # define V_BIT_LEN			8
-# define V_MAX_LEN		 	32
+# define V_MAX_LEN		 	72
 
 /*
 ** must be a mutliple of 8 and <= 4096 (32768 bits)
@@ -149,8 +149,6 @@ t_varint					v_expmod(t_varint v, t_varint e, t_varint mod,
 t_varint					v_gcd(t_varint a, t_varint b, bool check);
 t_varint					*v_eea(t_varint *coef_r0, t_varint a, t_varint b, bool check);
 t_varint					v_inv(t_varint v, t_varint mod, bool check);
-t_varint					v_crt(t_varint v, t_varint e, t_varint p,
-		t_varint q);
 
 int							v_asn1_int_seq_der_e(t_read *r, t_varint *v, int nb_varint);
 int8_t						put_der_header(uint8_t *h, uint8_t type, unsigned int len);

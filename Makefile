@@ -61,7 +61,6 @@ SRC =	src/ft_memalloc.c\
 		src/varint/v_div_mod.c\
 		src/varint/v_expmod.c\
 		src/varint/v_gcd_eea_inv.c\
-		src/varint/v_crt.c\
 		src/varint/v_asn1_int_seq_der_e.c\
 		src/varint/v_asn1_int_seq_der_d.c\
 
