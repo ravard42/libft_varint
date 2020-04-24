@@ -150,7 +150,7 @@ t_varint					v_gcd(t_varint a, t_varint b, bool check);
 t_varint					*v_eea(t_varint *coef_r0, t_varint a, t_varint b, bool check);
 t_varint					v_inv(t_varint v, t_varint mod, bool check);
 
-int							v_asn1_int_seq_der_e(t_read *r, t_varint *v, int nb_varint);
+bool							v_asn1_int_seq_der_e(t_read *r, t_varint *v, int nb_varint);
 int8_t						put_der_header(uint8_t *h, uint8_t type, unsigned int len);
 t_varint					*v_asn1_int_seq_der_d(int *nb_varint, t_read *r);
 
