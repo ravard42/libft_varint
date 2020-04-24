@@ -115,7 +115,8 @@ t_varint				*v_asn1_int_seq_der_d(int *nb_varint, t_read *r)
 	ori.nxt = NULL;
 	if ((*nb_varint = check_and_count(&ori, r)) == -1)
 		return (NULL);
-	ret = (t_varint *)malloc(sizeof(t_varint) * *nb_varint);
+	if (!(ret = (t_varint *)malloc(sizeof(t_varint) * *nb_varint)))
+		return (NULL);
 	cur = &ori;
 	while ((cur = cur->nxt) != NULL)
 	{
