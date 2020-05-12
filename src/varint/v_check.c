@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:39:02 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/30 07:05:44 by ravard           ###   ########.fr       */
+/*   Updated: 2020/05/12 03:35:25 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,15 @@ static bool				v_len_check(t_varint *v)
 ** (v_crt have some error and need to be reviewed so awaiting)
 */
 
-static const char	*op_name[] = {"left_shift", "add", "mul", "exp",
+static const char	*g_op_name[] = {"left_shift", "add", "mul", "exp",
 	"div", "expmod", "eea", NULL};
-static t_op_check	op_check[] = {v_lshift_check, v_add_check, v_mul_check,
+static t_g_op_check	g_op_check[] = {v_lshift_check, v_add_check, v_mul_check,
 	v_exp_check, v_div_check, v_expmod_check, v_eea_check};
 
 bool					v_check(t_varint *a, t_varint *b, t_varint *m, char *op)
 {
-	// pas de static ici sinon ça tourne mal (si on appel un v_print dans un v_check qui rappel un autre v_check par example)
-	t_varint		*v_tab[3] = {NULL, NULL, NULL};
-	int					i;
+	t_varint		*v_tab[3];
+	int				i;
 
 	v_tab[0] = a;
 	v_tab[1] = b;
@@ -74,9 +73,9 @@ bool					v_check(t_varint *a, t_varint *b, t_varint *m, char *op)
 		}
 	}
 	i = -1;
-	while (op_name[++i] && ft_strcmp(op_name[i], op))
+	while (g_op_name[++i] && ft_strcmp(g_op_name[i], op))
 		;
-	if (op_name[i])
-		return (op_check[i](v_tab));
+	if (g_op_name[i])
+		return (g_op_check[i](v_tab));
 	return (true);
 }

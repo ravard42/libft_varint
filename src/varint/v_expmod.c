@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:05:03 by ravard            #+#    #+#             */
-/*   Updated: 2020/01/30 04:14:54 by ravard           ###   ########.fr       */
+/*   Updated: 2020/05/12 03:41:17 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 ** a^b mod(n) = (a mod(n))^b mod(n)
 **
 ** expmod reduce 'a' to 'a mod(n)' from the entry of the function
-**	so for overflow checking we only need to check that n * n don't overflow (see V_MUL OVFL NOTE)
+** so for overflow checking we only need to check that n * n don't overflow
+** (see V_MUL OVFL NOTE)
 **
 **
 ** a = v[0]
@@ -46,7 +47,7 @@ bool			v_expmod_check(t_varint *v[3])
 	return (true);
 }
 
-static void	sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod)
+static void		sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod)
 {
 	if (v == NULL)
 	{
@@ -60,11 +61,11 @@ static void	sqr_mul_mod(t_varint *ret, t_varint *v, t_varint *mod)
 	}
 }
 
-t_varint	v_expmod(t_varint v, t_varint e, t_varint mod, bool check)
+t_varint		v_expmod(t_varint v, t_varint e, t_varint mod, bool check)
 {
 	int16_t			i;
-	int8_t				j;
-	t_varint			ret;
+	int8_t			j;
+	t_varint		ret;
 
 	if (check && !v_check(&v, &e, &mod, "expmod"))
 		return (g_v[3]);
