@@ -6,7 +6,7 @@
 /*   By: ravard <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 04:39:02 by ravard            #+#    #+#             */
-/*   Updated: 2020/05/12 03:35:25 by ravard           ###   ########.fr       */
+/*   Updated: 2020/05/12 14:46:10 by ravard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static bool				v_len_check(t_varint *v)
 
 static const char	*g_op_name[] = {"left_shift", "add", "mul", "exp",
 	"div", "expmod", "eea", NULL};
-static t_g_op_check	g_op_check[] = {v_lshift_check, v_add_check, v_mul_check,
+static t_op_check	g_op_check[] = {v_lshift_check, v_add_check, v_mul_check,
 	v_exp_check, v_div_check, v_expmod_check, v_eea_check};
 
 bool					v_check(t_varint *a, t_varint *b, t_varint *m, char *op)
