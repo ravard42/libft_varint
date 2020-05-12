@@ -25,7 +25,7 @@
 bool			v_div_check(t_varint *v[3])
 {
 	if (is_g_v(0, v[1])
-		&& ft_dprintf(2, V_ERR_DIV_0, KRED, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_DIV_0], KRED, KNRM))
 		return (false);
 	return (true);
 }

@@ -23,7 +23,7 @@
 int8_t	put_der_header(uint8_t *h, uint8_t type, unsigned int len)
 {
 	if (len > 0xffff
-		&& ft_dprintf(2, V_ERR_DER_2BIG, KRED, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_DER_2BIG], KRED, KNRM))
 		return (-1);
 	ft_memset((char *)h, 0, 5);
 	h[1] = type;

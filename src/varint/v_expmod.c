@@ -32,16 +32,16 @@ bool			v_expmod_check(t_varint *v[3])
 	int16_t	byte_len;
 
 	if (v[1]->sign == -1
-		&& ft_dprintf(2, V_ERR_NEG_POW, KRED, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_NEG_POW], KRED, KNRM))
 		return (false);
 	if (is_g_v(0, v[2])
-		&& ft_dprintf(2, V_ERR_DIV_0, KRED, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_DIV_0], KRED, KNRM))
 		return (false);
 	msb[0] = v_msb_id(v[2]);
 	msb[1] = msb[0] * 2;
 	byte_len = 1 + msb[1] / V_BIT_LEN;
 	if (byte_len > V_MAX_LEN
-		&& ft_dprintf(2, V_ERR_EXPMOD_OVFL, KRED, byte_len, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_EXPMOD_OVFL], KRED, byte_len, KNRM))
 		return (false);
 	return (true);
 }

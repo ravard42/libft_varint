@@ -13,7 +13,7 @@ bool			v_lshift_check(t_varint *v[3])
 	msb = v_msb_id(v[0]) + 1;
 	byte_len = 1 + msb / V_BIT_LEN;
 	if (byte_len > V_MAX_LEN
-		&& ft_dprintf(2, V_ERR_LSHIFT_OVFL, KRED, byte_len, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_LSHIFT_OVFL], KRED, byte_len, KNRM))
 		return (false);
 	return (true);
 }

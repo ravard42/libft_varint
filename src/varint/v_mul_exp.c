@@ -31,7 +31,7 @@ bool			v_mul_check(t_varint *v[3])
 	len32[0] += 2;
 	len32[1] = V_MAX_LEN / 4;
 	if (len32[0] > len32[1]
-		&& ft_dprintf(2, V_ERR_MUL_OVFL, KRED, len32[0] * 4, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_MUL_OVFL], KRED, len32[0] * 4, KNRM))
 		return (false);
 	return (true);
 }
@@ -112,10 +112,10 @@ bool			v_exp_check(t_varint *v[3])
 	int16_t		byte_len;
 
 	if (v[1]->sign == -1
-		&& ft_dprintf(2, V_ERR_NEG_POW, KRED, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_NEG_POW], KRED, KNRM))
 		return (false);
 	if (v[1]->len > 2
-		&& ft_dprintf(2, V_ERR_EXP_LIM, KRED, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_EXP_LIM], KRED, KNRM))
 		return (false);
 	e64 = 0;
 	i = -1;
@@ -125,7 +125,7 @@ bool			v_exp_check(t_varint *v[3])
 	msb[1] = (msb[0] + 1) * e64;
 	byte_len = 1 + msb[1] / V_BIT_LEN;
 	if (byte_len > V_MAX_LEN
-		&& ft_dprintf(2, V_ERR_EXP_OVFL, KRED, byte_len, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_EXP_OVFL], KRED, byte_len, KNRM))
 		return (false);
 	return (true);
 }

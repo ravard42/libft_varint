@@ -17,7 +17,7 @@ bool			is_g_v(int8_t i, t_varint *v)
 	if (i == 3)
 	{
 		if (v->sign != -1 && v->sign != 1
-			&& ft_dprintf(2, V_ERR, KRED, KNRM))
+			&& ft_dprintf(2, g_v_sterr[V_ERR], KRED, KNRM))
 			return (true);
 		return (false);
 	}
@@ -61,7 +61,7 @@ t_varint		v_init(char sign, uint8_t *src, int16_t len)
 	if (sign != -1 && sign != 1)
 		return (g_v[3]);
 	if ((len <= 0 || len > V_MAX_LEN)
-		&& ft_dprintf(2, V_ERR_LEN_0, KRED, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_LEN_0], KRED, KNRM))
 		return (g_v[3]);
 	v = g_v[0];
 	v.sign = sign;

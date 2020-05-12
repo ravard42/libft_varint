@@ -42,7 +42,7 @@ bool			v_add_check(t_varint *v[3])
 	msb[2] += v[0]->sign == v[1]->sign ? 1 : 0;
 	byte_len = 1 + msb[2] / V_BIT_LEN;
 	if (byte_len > V_MAX_LEN
-		&& ft_dprintf(2, V_ERR_ADD_OVFL, KRED, byte_len, KNRM))
+		&& ft_dprintf(2, g_v_sterr[V_ERR_ADD_OVFL], KRED, byte_len, KNRM))
 		return (false);
 	return (true);
 }
