@@ -83,7 +83,7 @@ typedef struct		s_conv
 */
 
 void				*ft_memalloc(size_t size);
-void				ft_memset(char *b, char c, size_t len);
+void				ft_memset(void *b, char c, size_t len);
 void				*ft_memcpy(void *dst, const void *src, size_t n);
 void				*ft_memrcpy(void *dst, const void *src, size_t n);
 void				*ft_memshift(void *p, ssize_t len, ssize_t jump);
@@ -112,7 +112,9 @@ int					ft_len(char *buf, char mode);
 int					ft_power(int x, int n);
 int					ft_atoi(const char *str);
 int					ft_hexatoi(const char *str);
+float				ft_atof(char *s);
 bool				ft_is_decimal(char *str);
+bool				ft_is_float(char *str);
 char				ft_toupper(char c);
 uint64_t			*hstr_to_64_t(uint64_t *x, int64_t len_64, char *str,
 						bool yel_msg);

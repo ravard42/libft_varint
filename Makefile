@@ -25,6 +25,7 @@ SRC =	src/ft_memalloc.c\
 		src/ft_strdup.c\
 		src/ft_strsplit.c\
 		src/ft_atoi.c\
+		src/ft_atof.c\
 		src/ft_is_decimal.c\
 		src/hstr_to_64_t.c\
 		src/malloc_free_tools.c\
