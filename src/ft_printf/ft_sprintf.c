@@ -12,6 +12,12 @@
 
 #include "libft.h"
 
+
+/*
+** 	WARNING
+** 	str must be allocated outside of ft_sprintf with enough memory space
+*/
+
 static void		init(char *str, t_spe *sp)
 {
 	sp->buff.b = NULL;

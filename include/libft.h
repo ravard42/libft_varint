@@ -110,6 +110,7 @@ char				**ft_strsplit(const char *s, char c);
 char				*polarity(char *str, int *sign);
 int					ft_len(char *buf, char mode);
 int					ft_power(int x, int n);
+char				*ft_itoa(int n);
 int					ft_atoi(const char *str);
 int					ft_hexatoi(const char *str);
 float				ft_atof(char *s);
